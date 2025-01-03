@@ -6,14 +6,15 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.ParseException;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JEditorPane;
-import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -24,8 +25,10 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
-import javax.swing.text.MaskFormatter;
+import javax.swing.text.AbstractDocument;
 
+import Jm.JMascara;
+import controle.InputFilter;
 import dao.DAO;
 import modelo.Assistencia;
 import modelo.Endereco;
@@ -34,20 +37,25 @@ import modelo.ModeloTabela;
 import modelo.Orcamento;
 import modelo.Segurado;
 
-
-
-
 public class TelaPrincipal extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField txtNomeAssistencia;
+	private JTextField txtCnpj;
+	private JTextField txtNome;
+	private JTextField txtTelefone;	
 	private JTextField txtRua;
 	private JTextField txtBairro;
 	private JTextField txtNumero;
 	private JTextField txtCidade;
 	private JTextField txtEstado;
+	private JTextField txtCep;
 	private JTextField txtTecnico;
+	private JTextField txtSeguradoCep;
+	
+	private int cep;
+	private int seguradoCep;
+	private long telefone;
 	
 	//Endereço do segurado
 	private JTextField txtSeguradoRua;
@@ -57,16 +65,6 @@ public class TelaPrincipal extends JFrame {
 	private JTextField txtSeguradoEstado;
 	private JTextField txtSeguradoNome;
 	
-	//mascaras de formatação
-	private MaskFormatter mfCnpj;
-	private MaskFormatter mfTelefone;
-	private MaskFormatter mfCep;
-	
-	
-	private long telefone;
-	private String cnpj;
-	private long cep;
-	private long cepSegurado;
 	
 	Endereco enderecoAssistencia = new Endereco();
 	Endereco enderecoSegurado = new Endereco();
@@ -83,6 +81,10 @@ public class TelaPrincipal extends JFrame {
 	private JTextField txtNumeroSerie;
 	private String possibilidadeReparo;
 	private JTable table;
+	
+	//Foto
+	private FileInputStream fis;
+	private int tamanho;
 	
 	
 	
@@ -126,20 +128,20 @@ public class TelaPrincipal extends JFrame {
 		tabbedPane.setFont(new Font("Arial", Font.PLAIN, 18));
 		
 		JPanel abaEmpresa = new JPanel();
-		abaEmpresa.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		tabbedPane.addTab("Empresa", null, abaEmpresa, null);
 		abaEmpresa.setLayout(null);
 		
-		JLabel lblNomeAssistencia = new JLabel("DADOS DA ASSISTÊNCA");
-		lblNomeAssistencia.setFont(new Font("Arial Black", Font.PLAIN, 17));
-		lblNomeAssistencia.setBounds(22, 10, 350, 55);
-		abaEmpresa.add(lblNomeAssistencia);
+		JLabel lblDadosAssistencia = new JLabel("DADOS DA ASSISTÊNCA");
+		lblDadosAssistencia.setFont(new Font("Arial Black", Font.PLAIN, 17));
+		lblDadosAssistencia.setBounds(22, 10, 350, 55);
+		abaEmpresa.add(lblDadosAssistencia);
 		
-		txtNomeAssistencia = new JTextField();
-		txtNomeAssistencia.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		txtNomeAssistencia.setBounds(77, 60, 225, 26);
-		abaEmpresa.add(txtNomeAssistencia);
-		txtNomeAssistencia.setColumns(10);
+		txtNome = new JTextField();
+		txtNome.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		txtNome.setBounds(77, 60, 225, 26);
+		limitarEntrada(txtNome, InputFilter.SOMENTE_LETRAS);
+		abaEmpresa.add(txtNome);
+		txtNome.setColumns(10);
 		
 		JLabel lblEndereco = new JLabel("Endereço da Assistência");
 		lblEndereco.setFont(new Font("Arial Black", Font.PLAIN, 15));
@@ -176,6 +178,7 @@ public class TelaPrincipal extends JFrame {
 		txtNumero = new JTextField();
 		txtNumero.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		txtNumero.setBounds(348, 330, 74, 30);
+		limitarEntrada(txtNumero, InputFilter.SOMENTE_NUMEROS);
 		abaEmpresa.add(txtNumero);
 		txtNumero.setColumns(10);
 		
@@ -187,6 +190,7 @@ public class TelaPrincipal extends JFrame {
 		txtCidade = new JTextField();
 		txtCidade.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		txtCidade.setBounds(77, 370, 228, 26);
+		limitarEntrada(txtCidade, InputFilter.SOMENTE_LETRAS);
 		abaEmpresa.add(txtCidade);
 		txtCidade.setColumns(10);
 		
@@ -198,6 +202,7 @@ public class TelaPrincipal extends JFrame {
 		txtEstado = new JTextField();
 		txtEstado.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		txtEstado.setBounds(77, 410, 228, 26);
+		limitarEntrada(txtEstado, InputFilter.SOMENTE_LETRAS);
 		abaEmpresa.add(txtEstado);
 		txtEstado.setColumns(10);
 		
@@ -216,16 +221,18 @@ public class TelaPrincipal extends JFrame {
 		lblCnpj.setBounds(22, 100, 46, 30);
 		abaEmpresa.add(lblCnpj);
 		
-		//aplica a mascara
-		try {
-			mfCnpj = new MaskFormatter("##.###.###/####-##");
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		JFormattedTextField ftxtCnpj = new JFormattedTextField(mfCnpj);
-		ftxtCnpj.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		ftxtCnpj.setBounds(77, 100, 225, 26);
-		abaEmpresa.add(ftxtCnpj);
+		
+		txtCnpj = new JTextField();
+		txtCnpj.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				txtCnpj.setText(JMascara.GetJmascaraCpfCnpj(txtCnpj.getText()));
+			}
+		});
+		txtCnpj.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		txtCnpj.setBounds(77, 100, 225, 26);
+		abaEmpresa.add(txtCnpj);
+		txtCnpj.setColumns(10);
 		
 		JLabel lblTelefone = new JLabel("Telefone de Contato:");
 		lblTelefone.setFont(new Font("Arial", Font.PLAIN, 14));
@@ -240,18 +247,23 @@ public class TelaPrincipal extends JFrame {
 		txtTecnico = new JTextField();
 		txtTecnico.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		txtTecnico.setBounds(170, 180, 252, 26);
+		limitarEntrada(txtTecnico, InputFilter.SOMENTE_LETRAS);
 		abaEmpresa.add(txtTecnico);
 		txtTecnico.setColumns(10);
 		
-		try {
-			mfTelefone = new MaskFormatter("(##)#####-####");
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		JFormattedTextField ftxtTelefone = new JFormattedTextField(mfTelefone);
-		ftxtTelefone.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		ftxtTelefone.setBounds(170, 140, 252, 26);
-		abaEmpresa.add(ftxtTelefone);
+
+		txtTelefone = new JTextField();
+		txtTelefone.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				txtTelefone.setText(JMascara.GetJmascaraFone(txtTelefone.getText()));
+			}
+		});
+		txtTelefone.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		txtTelefone.setBounds(170, 140, 252, 26);
+		abaEmpresa.add(txtTelefone);
+		txtTelefone.setColumns(10);
+		
 		
 		
 		//Segurado
@@ -296,6 +308,7 @@ public class TelaPrincipal extends JFrame {
 		txtSeguradoNumero = new JTextField();
 		txtSeguradoNumero.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		txtSeguradoNumero.setBounds(948, 330, 74, 30);
+		limitarEntrada(txtSeguradoNumero, InputFilter.SOMENTE_NUMEROS);
 		abaEmpresa.add(txtSeguradoNumero);
 		txtSeguradoNumero.setColumns(10);
 		
@@ -307,6 +320,7 @@ public class TelaPrincipal extends JFrame {
 		txtSeguradoCidade = new JTextField();
 		txtSeguradoCidade.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		txtSeguradoCidade.setBounds(677, 370, 228, 26);
+		limitarEntrada(txtSeguradoCidade, InputFilter.SOMENTE_LETRAS);
 		abaEmpresa.add(txtSeguradoCidade);
 		txtSeguradoCidade.setColumns(10);
 		
@@ -318,6 +332,7 @@ public class TelaPrincipal extends JFrame {
 		txtSeguradoEstado = new JTextField();
 		txtSeguradoEstado.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		txtSeguradoEstado.setBounds(677, 410, 228, 26);
+		limitarEntrada(txtSeguradoEstado, InputFilter.SOMENTE_LETRAS);
 		abaEmpresa.add(txtSeguradoEstado);
 		txtSeguradoEstado.setColumns(10);
 		
@@ -326,18 +341,32 @@ public class TelaPrincipal extends JFrame {
 		lblSeguradoCep.setBounds(622, 450, 45, 30);
 		abaEmpresa.add(lblSeguradoCep);
 		
-		try {
-			mfCep = new MaskFormatter("#####-###");
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		JFormattedTextField ftxtCep = new JFormattedTextField(mfCep);
-		ftxtCep.setBounds(77, 453, 228, 26);
-		abaEmpresa.add(ftxtCep);
+
 		
-		JFormattedTextField ftxtSeguradoCep = new JFormattedTextField(mfCep);
-		ftxtSeguradoCep.setBounds(677, 453, 228, 26);
-		abaEmpresa.add(ftxtSeguradoCep);
+		txtCep = new JTextField();
+		txtCep.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				txtCep.setText(JMascara.GetJmascaraCep(txtCep.getText()));
+			}
+		});
+		txtCep.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		txtCep.setBounds(77, 453, 228, 26);
+		abaEmpresa.add(txtCep);
+		txtCep.setColumns(10);
+		
+		txtSeguradoCep = new JTextField();
+		txtSeguradoCep.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				txtSeguradoCep.setText(JMascara.GetJmascaraCep(txtSeguradoCep.getText()));
+			}
+		});
+		txtSeguradoCep.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		txtSeguradoCep.setBounds(677, 453, 228, 26);
+		abaEmpresa.add(txtSeguradoCep);
+		txtSeguradoCep.setColumns(10);
+		
 		
 		JLabel lblSeguradoNome = new JLabel("Nome do Segurado");
 		lblSeguradoNome.setFont(new Font("Arial Black", Font.PLAIN, 15));
@@ -347,6 +376,7 @@ public class TelaPrincipal extends JFrame {
 		txtSeguradoNome = new JTextField();
 		txtSeguradoNome.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		txtSeguradoNome.setBounds(622, 130, 400, 26);
+		limitarEntrada(txtSeguradoNome, InputFilter.SOMENTE_LETRAS);
 		abaEmpresa.add(txtSeguradoNome);
 		txtSeguradoNome.setColumns(10);
 		
@@ -358,37 +388,28 @@ public class TelaPrincipal extends JFrame {
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				//recebe o FormattedTextField em variaveis de seus devidos tipos
-				telefone = Long.parseLong(ftxtTelefone.getText());
-				cnpj = ftxtCnpj.getText();
-				cep = Long.parseLong(ftxtCep.getText());
-				cepSegurado = Long.parseLong(ftxtSeguradoCep.getText());
-				
+			
 				//Cria a instancia do DAO para salvar no banco de dados
 				DAO dao = new DAO();
-				
-				//Cria instancias das classes modelos a serem salvas
+					
+					//Cria instancias das classes modelos a serem salvas
 				criarInstancias();
-				
-				//Apaga os textos digitados pelos usuarios nos FormattedTextField
-				ftxtCnpj.setText("");
-				ftxtTelefone.setText("");
-				ftxtCep.setText("");
-				ftxtSeguradoCep.setText("");
-				
-				//Apaga os textos dos campos restantes
-				apagarCampos();
-				
+					
 				dao.salvarEndereco(enderecoAssistencia);
 				/*Após salvar o endereco é gerado o id daquele endreço que vai para o banco de dados,
-				 * uso o metodo "resgatarId" para armazenar esse id em uma variavel, para passar essa variavel
-				 * para o metodo de salvar assistencia.
-				 */
+				* uso o metodo "resgatarId" para armazenar esse id em uma variavel, para passar essa variavel
+				* para o metodo de salvar assistencia.
+				*/
 				int idEnderecoAssistencia = resgatarId(enderecoAssistencia);
 				dao.salvarEndereco(enderecoSegurado);
 				int idEnderecoSegurado = resgatarId(enderecoSegurado);
 				dao.salvarAssistencia(assistencia, idEnderecoAssistencia);
 				dao.salvarSegurado(segurado, idEnderecoSegurado);
+				
+				//Apaga os textos dos campos
+				apagarCampos();
+				
+				JOptionPane.showMessageDialog(null, "Salvo com sucesso!", "Mensagem", JOptionPane.INFORMATION_MESSAGE);
 				
 			}
 		});
@@ -402,6 +423,7 @@ public class TelaPrincipal extends JFrame {
 		JButton btnProsseguir = new JButton("Prosseguir");
 		btnProsseguir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				tabbedPane.setSelectedIndex(1);
 			}
 		});
 		btnProsseguir.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 14));
@@ -599,6 +621,8 @@ public class TelaPrincipal extends JFrame {
 				dao.salvarAssistencia(assistencia, idEnderecoAssistencia);
 				dao.salvarSegurado(segurado, idEnderecoSegurado);
 				
+				JOptionPane.showMessageDialog(null, "Salvo com sucesso!", "Mensagem", JOptionPane.INFORMATION_MESSAGE);
+				
 			}
 		});
 		
@@ -619,14 +643,19 @@ public class TelaPrincipal extends JFrame {
 		btnProsseguirEquipamento.setBounds(990, 500, 100, 35);
 		abaEquipamento.add(btnProsseguirEquipamento);
 		
-	}
+		
 	
+		
+	}
 
 	private void criarInstancias() {
 	    try {
 	        // Valida e obtém os valores digitados pelo usuário
 	        int numero = Integer.parseInt(txtNumero.getText());
 	        int numeroSegurado = Integer.parseInt(txtSeguradoNumero.getText());
+	        cep = Integer.parseInt(JMascara.GetJmascaraLimpar(txtCep.getText()));
+	        seguradoCep = Integer.parseInt(JMascara.GetJmascaraLimpar(txtSeguradoCep.getText()));
+	        telefone = Long.parseLong(JMascara.GetJmascaraLimpar(txtTelefone.getText()));
 
 	        // Instancia objetos após validação
 	        enderecoAssistencia = new Endereco(
@@ -644,17 +673,18 @@ public class TelaPrincipal extends JFrame {
 	            txtSeguradoBairro.getText(),
 	            txtSeguradoCidade.getText(),
 	            txtSeguradoEstado.getText(),
-	            cepSegurado
+	            seguradoCep
 	        );
 
 	        assistencia = new Assistencia(
-	            txtNomeAssistencia.getText(),
-	            cnpj,
+	            txtNome.getText(),
+	            JMascara.GetJmascaraLimpar(txtCnpj.getText()),
 	            telefone,
-	            txtTecnico.getText()
+	            txtCep.getText()
 	        );
 
 	        segurado = new Segurado(txtSeguradoNome.getText());
+			
 	    } catch (NumberFormatException e) {
 	        // Exibe mensagem ao usuário sobre dados inválidos
 	        JOptionPane.showMessageDialog(this, "Preencha todos os campos corretamente!", "Erro", JOptionPane.ERROR_MESSAGE);
@@ -680,15 +710,23 @@ public class TelaPrincipal extends JFrame {
 		return id;
 	}
 	
+	private static void limitarEntrada(JTextField textField, int tipo) {
+        AbstractDocument doc = (AbstractDocument) textField.getDocument();
+        doc.setDocumentFilter(new InputFilter(tipo));
+    }
+	
 	private void apagarCampos() {
-		txtNomeAssistencia.setText("");;
+		txtCnpj.setText("");
+		txtNome.setText("");
+		txtTelefone.setText("");
 		txtRua.setText("");
+		txtBairro.setText("");
 		txtNumero.setText("");
 		txtCidade.setText("");
 		txtEstado.setText("");
+		txtCep.setText("");
 		txtTecnico.setText("");
-		
-		//Endereço do segurado
+		txtSeguradoCep.setText("");
 		txtSeguradoRua.setText("");
 		txtSeguradoBairro.setText("");
 		txtSeguradoNumero.setText("");
@@ -696,11 +734,4 @@ public class TelaPrincipal extends JFrame {
 		txtSeguradoEstado.setText("");
 		txtSeguradoNome.setText("");
 	}
-	
-	
-	
-	
-	
-	
-	
 }
