@@ -21,9 +21,10 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import dao.DaoImages;
+import view.NotificacaoDiscreta;
 import view.TelaPrincipal;
 
-public class TelaFoto1 extends JFrame {
+public class TelaFoto5 extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -58,7 +59,7 @@ public class TelaFoto1 extends JFrame {
 	 */
 	
 	
-	public TelaFoto1() {
+	public TelaFoto5() {
 		setTitle("ADICIONE AS FOTOS DA RESIDÊNCIA");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -74,7 +75,7 @@ public class TelaFoto1 extends JFrame {
 		lblFoto.setBounds(189, 87, 256, 256);
 		contentPane.add(lblFoto);
 		
-		lblDescricaoFoto = new JLabel("1- Fachada da Residência");
+		lblDescricaoFoto = new JLabel("5- Localização fixa");
 		lblDescricaoFoto.setFont(new Font("Arial", Font.PLAIN, 17));
 		lblDescricaoFoto.setBounds(20, 25, 280, 35);
 		contentPane.add(lblDescricaoFoto);
@@ -84,8 +85,8 @@ public class TelaFoto1 extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				dispose();
-				TelaFoto2 novaTela = new TelaFoto2();	
-				novaTela.setVisible(true);
+
+				
 			}
 		});
 		btnProsseguir.setBackground(SystemColor.activeCaptionBorder);
@@ -99,9 +100,10 @@ public class TelaFoto1 extends JFrame {
 				carregarFoto();
 				
 				DaoImages dao = new DaoImages();
+				int a = dao.getIdEmpresa() - 1;
+				dao.setIdEmpresa(a);
 
-				dao.criarEmpresa();
-				dao.salvarImagem("fachada", fis, tamanho);
+				dao.salvarImagem("localizacao", fis, tamanho);
 
 			}
 		});

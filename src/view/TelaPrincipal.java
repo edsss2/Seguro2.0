@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.FileInputStream;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -36,6 +35,8 @@ import modelo.Equipamento;
 import modelo.ModeloTabela;
 import modelo.Orcamento;
 import modelo.Segurado;
+import view.empresa.TelaFoto1;
+import view.empresa.TelaFoto2;
 
 public class TelaPrincipal extends JFrame {
 
@@ -82,9 +83,8 @@ public class TelaPrincipal extends JFrame {
 	private String possibilidadeReparo;
 	private JTable table;
 	
-	//Foto
-	private FileInputStream fis;
-	private int tamanho;
+	public static int fotosAdicionadas = 0;
+	private TelaFoto2 tela2;
 	
 	
 	
@@ -380,6 +380,18 @@ public class TelaPrincipal extends JFrame {
 		abaEmpresa.add(txtSeguradoNome);
 		txtSeguradoNome.setColumns(10);
 		
+		JButton btnAdicionarFotos = new JButton("Adicionar fotos");
+		btnAdicionarFotos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TelaFoto1 novaTela = new TelaFoto1();
+				novaTela.setVisible(true);
+			}
+		});
+		btnAdicionarFotos.setBackground(Color.LIGHT_GRAY);
+		btnAdicionarFotos.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 14));
+		btnAdicionarFotos.setBounds(22, 530, 130, 35);
+		abaEmpresa.add(btnAdicionarFotos);
+		
 		
 		/* Para salvar a assistencia ou o segurado é preciso que se salve o endereço de cada um, para que
 		 * no banco de dados já exista a chave estrangeira. 
@@ -414,24 +426,29 @@ public class TelaPrincipal extends JFrame {
 			}
 		});
 		
-		btnSalvar.setBorder(BorderFactory.createEtchedBorder());
 		btnSalvar.setBackground(Color.LIGHT_GRAY);
 		btnSalvar.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 14));
-		btnSalvar.setBounds(140, 530, 100, 35);
-		abaEmpresa.add(btnSalvar);
+		btnSalvar.setBounds(170, 530, 100, 35);
+		//if(fotosAdicionadas > 1) {
+			abaEmpresa.add(btnSalvar);
+		//}
 		
 		JButton btnProsseguir = new JButton("Prosseguir");
 		btnProsseguir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+//				TelaFoto1 novaTela = new TelaFoto1();
+//				novaTela.setVisible(true);
+				
 				tabbedPane.setSelectedIndex(1);
 			}
 		});
 		btnProsseguir.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 14));
-		btnProsseguir.setBorder(UIManager.getBorder("DesktopIcon.border"));
 		btnProsseguir.setBackground(Color.LIGHT_GRAY);
-		btnProsseguir.setBounds(260, 530, 100, 35);
-		abaEmpresa.add(btnProsseguir);
-		
+		btnProsseguir.setBounds(290, 530, 100, 35);
+		//if(fotosAdicionadas > 1) {
+			abaEmpresa.add(btnProsseguir);
+		//}
 		
 		JPanel abaEquipamento = new JPanel();
 		tabbedPane.addTab("Equipamento", null, abaEquipamento, null);
@@ -643,7 +660,9 @@ public class TelaPrincipal extends JFrame {
 		btnProsseguirEquipamento.setBounds(990, 500, 100, 35);
 		abaEquipamento.add(btnProsseguirEquipamento);
 		
-		
+		if (tela2 != null && !tela2.isVisible() && fotosAdicionadas > 0) {
+		    NotificacaoDiscreta.mostrarNotificacao(this, fotosAdicionadas + " Fotos foram adicionadas");
+		} 
 	
 		
 	}

@@ -3,54 +3,70 @@ package dao;
 import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 
 import controle.Conexao;
 
 public class DaoImages {
+	
+	private int idEmpresa;
+	private int geradorId;
+	
 	private static PreparedStatement stmt = null;
-	private static ResultSet rs = null;
 	private static Connection conn = null;
 	
-	private final static String SALVAR_IMAGENS_EMPRESA = "INSERT INTO imagens_empresa (fachada, numero, medidor, quadro_dijuntores, localizacao)"
-			+ "(?, ?, ?, ?, ?)";
+	public DaoImages() {
+		geradorId++;
+		this.idEmpresa = geradorId;
+	}
 	
-	public void preparaConexao() {
-		String query = SALVAR_IMAGENS_EMPRESA;
+
+	private static final String CRIAR_EMPRESA = "INSERT INTO imagens_empresa (id, fachada, numero, medidor, "
+			+ "quadro_dijuntores, localizacao) VALUES (?, null, null, null, null, null)";
+	
+	public void criarEmpresa() {
+		String query = CRIAR_EMPRESA;
 		
 		try {
-			
 			conn = Conexao.getConnection();
 			stmt = conn.prepareStatement(query);
+			stmt.setInt(1, this.idEmpresa);
 			
-		} catch (Exception e) {
-			System.out.println(e);
-		}
-			
-	}
-	
-	public static void setParameters(PreparedStatement stmt, int i, FileInputStream fis, int tamanho) {
-		try {
-		stmt.setBlob(i, fis, tamanho);
-		}catch (Exception e) {
-			System.out.println(e);
-		}
-	}
-	
-	public void fecharConexao() {
-		Conexao.closeConnection(conn);
-		Conexao.closeStatement(stmt);
-	}
-	
-	public void salvarImagensEmpresa() {
-		
-		try {
 			stmt.executeUpdate();
 			
+			
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println(e);
 		}
 		
 	}
 	
+    // Método para salvar uma imagem em uma coluna específica do banco
+    public void salvarImagem(String coluna, FileInputStream fis, int tamanho) {
+        String query = "UPDATE imagens_empresa SET " + coluna + " = ? WHERE id = ?";
+
+        try (Connection conn = Conexao.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setBlob(1, fis, tamanho);
+           
+            stmt.setInt(2, this.idEmpresa);
+
+            stmt.executeUpdate();
+            System.out.println("Imagem salva com sucesso na coluna: " + coluna);
+
+        } catch (Exception e) {
+            System.out.println("Erro ao salvar imagem na coluna " + coluna + ": " + e.getMessage());
+        }
+    }
+
+	public int getIdEmpresa() {
+		return idEmpresa;
+	}
+
+	public void setIdEmpresa(int idEmpresa) {
+		this.idEmpresa = idEmpresa;
+	}
+    
+    
+    
 }
