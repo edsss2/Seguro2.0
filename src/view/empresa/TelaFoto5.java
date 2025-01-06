@@ -116,6 +116,7 @@ public class TelaFoto5 extends JFrame {
 		
 	}
 	
+	
 	private void carregarFoto() {
 		JFileChooser jfc = new JFileChooser();
 		jfc.setDialogTitle("Selecionar arquivo");

@@ -37,6 +37,7 @@ public class TelaFoto1 extends JFrame {
 	private JButton btnProsseguir;
 	private JButton btnCarregarImagem;
 
+	
 	/**
 	 * Launch the application.
 	 */
