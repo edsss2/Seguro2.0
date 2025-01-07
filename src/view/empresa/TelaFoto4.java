@@ -38,28 +38,11 @@ public class TelaFoto4 extends JFrame {
 	private JButton btnProsseguir;
 	private JButton btnCarregarImagem;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					TelaFoto1 frame = new TelaFoto1();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
+	private TelaPrincipal telaPrincipal;
 	
-	
-	public TelaFoto4() {
+	public TelaFoto4(TelaPrincipal telaPrincipal) {
+		this.telaPrincipal = telaPrincipal;
+		
 		setTitle("ADICIONE AS FOTOS DA RESIDÊNCIA");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -71,7 +54,7 @@ public class TelaFoto4 extends JFrame {
 		contentPane.setLayout(null);
 		
 		lblFoto = new JLabel("");
-		lblFoto.setIcon(new ImageIcon("Z:\\Projetos\\seguro\\src\\img\\9004666_image_photo_picture_gallery_file_icon.png"));
+		lblFoto.setIcon(new ImageIcon("Z:\\Projetos\\seguro\\src\\img\\photo_icon.png"));
 		lblFoto.setBounds(189, 87, 256, 256);
 		contentPane.add(lblFoto);
 		
@@ -85,8 +68,8 @@ public class TelaFoto4 extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				dispose();
-				TelaFoto5 novaTela = new TelaFoto5();	
-				novaTela.setVisible(true);
+				telaPrincipal.telaFoto5 = new TelaFoto5(telaPrincipal);	
+				telaPrincipal.telaFoto5.setVisible(true);
 				
 			}
 		});
@@ -104,7 +87,7 @@ public class TelaFoto4 extends JFrame {
 				int a = dao.getIdEmpresa() - 1;
 				dao.setIdEmpresa(a);
 
-				dao.salvarImagem("quadro", fis, tamanho);
+				dao.salvarImagem("quadro_dijuntores", fis, tamanho);
 
 			}
 		});

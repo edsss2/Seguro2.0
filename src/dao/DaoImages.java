@@ -9,7 +9,7 @@ import controle.Conexao;
 public class DaoImages {
 	
 	private int idEmpresa;
-	private int geradorId;
+	private int geradorId = 0;
 	
 	private static PreparedStatement stmt = null;
 	private static Connection conn = null;
@@ -20,7 +20,7 @@ public class DaoImages {
 	}
 	
 
-	private static final String CRIAR_EMPRESA = "INSERT INTO imagens_empresa (id, fachada, numero, medidor, "
+	private static final String CRIAR_EMPRESA = "INSERT INTO imagens_empresa (id_empresa, fachada, numero, medidor, "
 			+ "quadro_dijuntores, localizacao) VALUES (?, null, null, null, null, null)";
 	
 	public void criarEmpresa() {
@@ -42,7 +42,7 @@ public class DaoImages {
 	
     // Método para salvar uma imagem em uma coluna específica do banco
     public void salvarImagem(String coluna, FileInputStream fis, int tamanho) {
-        String query = "UPDATE imagens_empresa SET " + coluna + " = ? WHERE id = ?";
+        String query = "UPDATE imagens_empresa SET " + coluna + " = ? WHERE id_empresa = ?";
 
         try (Connection conn = Conexao.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {

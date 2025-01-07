@@ -11,6 +11,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JEditorPane;
@@ -37,6 +38,9 @@ import modelo.Orcamento;
 import modelo.Segurado;
 import view.empresa.TelaFoto1;
 import view.empresa.TelaFoto2;
+import view.empresa.TelaFoto3;
+import view.empresa.TelaFoto4;
+import view.empresa.TelaFoto5;
 
 public class TelaPrincipal extends JFrame {
 
@@ -84,7 +88,12 @@ public class TelaPrincipal extends JFrame {
 	private JTable table;
 	
 	public static int fotosAdicionadas = 0;
-	private TelaFoto2 tela2;
+	
+	public TelaFoto1 telaFoto1;
+	public TelaFoto2 telaFoto2;
+	public TelaFoto3 telaFoto3;
+	public TelaFoto4 telaFoto4;
+	public TelaFoto5 telaFoto5;
 	
 	
 	
@@ -275,70 +284,70 @@ public class TelaPrincipal extends JFrame {
 		
 		JLabel lblSeguradoEndereco = new JLabel("Endereço do Segurado");
 		lblSeguradoEndereco.setFont(new Font("Arial Black", Font.PLAIN, 15));
-		lblSeguradoEndereco.setBounds(622, 240, 280, 55);
+		lblSeguradoEndereco.setBounds(622, 160, 280, 55);
 		abaEmpresa.add(lblSeguradoEndereco);
 		
 		JLabel lblSeguradoRua = new JLabel("Rua:");
 		lblSeguradoRua.setFont(new Font("Arial", Font.PLAIN, 14));
-		lblSeguradoRua.setBounds(622, 290, 35, 30);
+		lblSeguradoRua.setBounds(622, 210, 35, 30);
 		abaEmpresa.add(lblSeguradoRua);
 		
 		JLabel lblSeguradoBairro = new JLabel("Bairro:");
 		lblSeguradoBairro.setFont(new Font("Arial", Font.PLAIN, 14));
-		lblSeguradoBairro.setBounds(622, 330, 42, 30);
+		lblSeguradoBairro.setBounds(622, 250, 42, 30);
 		abaEmpresa.add(lblSeguradoBairro);
 		
 		txtSeguradoRua = new JTextField();
 		txtSeguradoRua.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		txtSeguradoRua.setBounds(677, 290, 345, 26);
+		txtSeguradoRua.setBounds(677, 210, 345, 26);
 		abaEmpresa.add(txtSeguradoRua);
 		txtSeguradoRua.setColumns(10);
 		
 		txtSeguradoBairro = new JTextField();
 		txtSeguradoBairro.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		txtSeguradoBairro.setBounds(677, 330, 228, 26);
+		txtSeguradoBairro.setBounds(677, 250, 228, 26);
 		abaEmpresa.add(txtSeguradoBairro);
 		txtSeguradoBairro.setColumns(10);
 		
 		JLabel lblSeguradoNumero = new JLabel("N° :");
 		lblSeguradoNumero.setFont(new Font("Arial", Font.PLAIN, 14));
-		lblSeguradoNumero.setBounds(915, 330, 23, 30);
+		lblSeguradoNumero.setBounds(915, 250, 23, 30);
 		abaEmpresa.add(lblSeguradoNumero);
 		
 		txtSeguradoNumero = new JTextField();
 		txtSeguradoNumero.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		txtSeguradoNumero.setBounds(948, 330, 74, 30);
+		txtSeguradoNumero.setBounds(948, 250, 74, 30);
 		limitarEntrada(txtSeguradoNumero, InputFilter.SOMENTE_NUMEROS);
 		abaEmpresa.add(txtSeguradoNumero);
 		txtSeguradoNumero.setColumns(10);
 		
 		JLabel lblSeguradoCidade = new JLabel("Cidade:");
 		lblSeguradoCidade.setFont(new Font("Arial", Font.PLAIN, 14));
-		lblSeguradoCidade.setBounds(622, 370, 49, 30);
+		lblSeguradoCidade.setBounds(622, 290, 49, 30);
 		abaEmpresa.add(lblSeguradoCidade);
 		
 		txtSeguradoCidade = new JTextField();
 		txtSeguradoCidade.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		txtSeguradoCidade.setBounds(677, 370, 228, 26);
+		txtSeguradoCidade.setBounds(677, 290, 228, 26);
 		limitarEntrada(txtSeguradoCidade, InputFilter.SOMENTE_LETRAS);
 		abaEmpresa.add(txtSeguradoCidade);
 		txtSeguradoCidade.setColumns(10);
 		
 		JLabel lblSeguradoEstado = new JLabel("Estado:");
 		lblSeguradoEstado.setFont(new Font("Arial", Font.PLAIN, 14));
-		lblSeguradoEstado.setBounds(622, 410, 50, 30);
+		lblSeguradoEstado.setBounds(622, 330, 50, 30);
 		abaEmpresa.add(lblSeguradoEstado);
 		
 		txtSeguradoEstado = new JTextField();
 		txtSeguradoEstado.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		txtSeguradoEstado.setBounds(677, 410, 228, 26);
+		txtSeguradoEstado.setBounds(677, 330, 228, 26);
 		limitarEntrada(txtSeguradoEstado, InputFilter.SOMENTE_LETRAS);
 		abaEmpresa.add(txtSeguradoEstado);
 		txtSeguradoEstado.setColumns(10);
 		
 		JLabel lblSeguradoCep = new JLabel("Cep:");
 		lblSeguradoCep.setFont(new Font("Arial", Font.PLAIN, 14));
-		lblSeguradoCep.setBounds(622, 450, 45, 30);
+		lblSeguradoCep.setBounds(622, 370, 45, 30);
 		abaEmpresa.add(lblSeguradoCep);
 		
 
@@ -351,7 +360,7 @@ public class TelaPrincipal extends JFrame {
 			}
 		});
 		txtCep.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		txtCep.setBounds(77, 453, 228, 26);
+		txtCep.setBounds(77, 450, 228, 26);
 		abaEmpresa.add(txtCep);
 		txtCep.setColumns(10);
 		
@@ -363,7 +372,7 @@ public class TelaPrincipal extends JFrame {
 			}
 		});
 		txtSeguradoCep.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		txtSeguradoCep.setBounds(677, 453, 228, 26);
+		txtSeguradoCep.setBounds(677, 370, 228, 26);
 		abaEmpresa.add(txtSeguradoCep);
 		txtSeguradoCep.setColumns(10);
 		
@@ -380,17 +389,53 @@ public class TelaPrincipal extends JFrame {
 		abaEmpresa.add(txtSeguradoNome);
 		txtSeguradoNome.setColumns(10);
 		
+		JLabel lblImagens = new JLabel("Imagens:");
+		lblImagens.setFont(new Font("Arial Black", Font.PLAIN, 15));
+		lblImagens.setBounds(622, 415, 100, 35);
+		abaEmpresa.add(lblImagens);
+		
+		JPanel painelImagens = new JPanel();
+		painelImagens.setBounds(622, 450, 420, 90);
+		abaEmpresa.add(painelImagens);
+		painelImagens.setLayout(null);
+		
+		JButton imagem1 = new JButton("");
+		imagem1.setIcon(new ImageIcon("Z:\\Projetos\\seguro\\src\\img\\icons8-imagem-64.png"));
+		imagem1.setBounds(0, 0, 80, 80);
+		painelImagens.add(imagem1);
+		
+		JButton imagem2 = new JButton("");
+		imagem2.setIcon(new ImageIcon("Z:\\Projetos\\seguro\\src\\img\\icons8-imagem-64.png"));
+		imagem2.setBounds(80, 0, 80, 80);
+		painelImagens.add(imagem2);
+		
+		JButton imagem3 = new JButton("");
+		imagem3.setIcon(new ImageIcon("Z:\\Projetos\\seguro\\src\\img\\icons8-imagem-64.png"));
+		imagem3.setBounds(160, 0, 80, 80);
+		painelImagens.add(imagem3);
+		
+		JButton imagem4 = new JButton("");
+		imagem4.setIcon(new ImageIcon("Z:\\Projetos\\seguro\\src\\img\\icons8-imagem-64.png"));
+		imagem4.setBounds(240, 0, 80, 80);
+		painelImagens.add(imagem4);
+		
+		JButton imagem5 = new JButton("");
+		imagem5.setIcon(new ImageIcon("Z:\\Projetos\\seguro\\src\\img\\icons8-imagem-64.png"));
+		imagem5.setBounds(320, 0, 80, 80);
+		painelImagens.add(imagem5);
+		
 		JButton btnAdicionarFotos = new JButton("Adicionar fotos");
 		btnAdicionarFotos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaFoto1 novaTela = new TelaFoto1();
-				novaTela.setVisible(true);
+				telaFoto1 = new TelaFoto1(TelaPrincipal.this);
+				telaFoto1.setVisible(true);
 			}
 		});
 		btnAdicionarFotos.setBackground(Color.LIGHT_GRAY);
 		btnAdicionarFotos.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 14));
 		btnAdicionarFotos.setBounds(22, 530, 130, 35);
 		abaEmpresa.add(btnAdicionarFotos);
+		
 		
 		
 		/* Para salvar a assistencia ou o segurado é preciso que se salve o endereço de cada um, para que
@@ -429,16 +474,16 @@ public class TelaPrincipal extends JFrame {
 		btnSalvar.setBackground(Color.LIGHT_GRAY);
 		btnSalvar.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 14));
 		btnSalvar.setBounds(170, 530, 100, 35);
-		//if(fotosAdicionadas > 1) {
+		if(fotosAdicionadas > 0) {
 			abaEmpresa.add(btnSalvar);
-		//}
+		}
 		
 		JButton btnProsseguir = new JButton("Prosseguir");
 		btnProsseguir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-//				TelaFoto1 novaTela = new TelaFoto1();
-//				novaTela.setVisible(true);
+				//TelaFoto1 novaTela = new TelaFoto1();
+				//novaTela.setVisible(true);
 				
 				tabbedPane.setSelectedIndex(1);
 			}
@@ -446,9 +491,13 @@ public class TelaPrincipal extends JFrame {
 		btnProsseguir.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 14));
 		btnProsseguir.setBackground(Color.LIGHT_GRAY);
 		btnProsseguir.setBounds(290, 530, 100, 35);
-		//if(fotosAdicionadas > 1) {
+		if(fotosAdicionadas > 0) {
 			abaEmpresa.add(btnProsseguir);
-		//}
+		}
+		
+
+		
+		//aba Equipamento
 		
 		JPanel abaEquipamento = new JPanel();
 		tabbedPane.addTab("Equipamento", null, abaEquipamento, null);
@@ -659,10 +708,7 @@ public class TelaPrincipal extends JFrame {
 		btnProsseguirEquipamento.setBackground(Color.LIGHT_GRAY);
 		btnProsseguirEquipamento.setBounds(990, 500, 100, 35);
 		abaEquipamento.add(btnProsseguirEquipamento);
-		
-		if (tela2 != null && !tela2.isVisible() && fotosAdicionadas > 0) {
-		    NotificacaoDiscreta.mostrarNotificacao(this, fotosAdicionadas + " Fotos foram adicionadas");
-		} 
+
 	
 		
 	}
@@ -733,6 +779,10 @@ public class TelaPrincipal extends JFrame {
         AbstractDocument doc = (AbstractDocument) textField.getDocument();
         doc.setDocumentFilter(new InputFilter(tipo));
     }
+	
+	private void trocarIcones() {
+		
+	}
 	
 	private void apagarCampos() {
 		txtCnpj.setText("");

@@ -29,37 +29,19 @@ public class TelaFoto1 extends JFrame {
 	private JPanel contentPane;
 	
 	private int tamanho;
-	private FileInputStream fis;
+	private static FileInputStream fis;
 	
 	private JLabel lblFoto;
 	private JLabel lblDescricaoFoto;
 	
 	private JButton btnProsseguir;
 	private JButton btnCarregarImagem;
-
 	
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					TelaFoto1 frame = new TelaFoto1();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
+	private TelaPrincipal telaPrincipal;
 	
-	
-	public TelaFoto1() {
+	public TelaFoto1(TelaPrincipal telaPrincipal) {
+		this.telaPrincipal = telaPrincipal;
+		
 		setTitle("ADICIONE AS FOTOS DA RESIDÊNCIA");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -71,7 +53,7 @@ public class TelaFoto1 extends JFrame {
 		contentPane.setLayout(null);
 		
 		lblFoto = new JLabel("");
-		lblFoto.setIcon(new ImageIcon("Z:\\Projetos\\seguro\\src\\img\\9004666_image_photo_picture_gallery_file_icon.png"));
+		lblFoto.setIcon(new ImageIcon("Z:\\Projetos\\seguro\\src\\img\\photo_icon.png"));
 		lblFoto.setBounds(189, 87, 256, 256);
 		contentPane.add(lblFoto);
 		
@@ -85,8 +67,8 @@ public class TelaFoto1 extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				dispose();
-				TelaFoto2 novaTela = new TelaFoto2();	
-				novaTela.setVisible(true);
+				telaPrincipal.telaFoto2 = new TelaFoto2(telaPrincipal);	
+				telaPrincipal.telaFoto2.setVisible(true);
 			}
 		});
 		btnProsseguir.setBackground(SystemColor.activeCaptionBorder);

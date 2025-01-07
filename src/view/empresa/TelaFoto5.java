@@ -16,12 +16,12 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import dao.DaoImages;
-import view.NotificacaoDiscreta;
 import view.TelaPrincipal;
 
 public class TelaFoto5 extends JFrame {
@@ -37,29 +37,12 @@ public class TelaFoto5 extends JFrame {
 	
 	private JButton btnProsseguir;
 	private JButton btnCarregarImagem;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					TelaFoto1 frame = new TelaFoto1();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	
-	
-	public TelaFoto5() {
+	private TelaPrincipal telaPrincipal;
+
+	public TelaFoto5(TelaPrincipal telaPrincipal) {
+		this.telaPrincipal = telaPrincipal;
+		
 		setTitle("ADICIONE AS FOTOS DA RESIDÊNCIA");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -71,7 +54,7 @@ public class TelaFoto5 extends JFrame {
 		contentPane.setLayout(null);
 		
 		lblFoto = new JLabel("");
-		lblFoto.setIcon(new ImageIcon("Z:\\Projetos\\seguro\\src\\img\\9004666_image_photo_picture_gallery_file_icon.png"));
+		lblFoto.setIcon(new ImageIcon("Z:\\Projetos\\seguro\\src\\img\\photo_icon.png"));
 		lblFoto.setBounds(189, 87, 256, 256);
 		contentPane.add(lblFoto);
 		
@@ -84,9 +67,9 @@ public class TelaFoto5 extends JFrame {
 		btnProsseguir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				dispose();
-
+				verificaAsFotos();
 				
+				dispose();
 			}
 		});
 		btnProsseguir.setBackground(SystemColor.activeCaptionBorder);
@@ -116,6 +99,22 @@ public class TelaFoto5 extends JFrame {
 		
 	}
 	
+	private void verificaAsFotos() {
+		String mensagem = TelaPrincipal.fotosAdicionadas + " Fotos foram adicionadas";
+		String mensagem1 = TelaPrincipal.fotosAdicionadas + " Foto foi adicionada";
+		String mensagemErro ="Nenhuma foto foi adicionada";
+		
+		if (TelaPrincipal.fotosAdicionadas > 1) {
+			JOptionPane.showMessageDialog(TelaFoto5.this, mensagem, "Notificação", JOptionPane.INFORMATION_MESSAGE);			
+		}else if(TelaPrincipal.fotosAdicionadas == 1) {
+			JOptionPane.showMessageDialog(TelaFoto5.this, mensagem1, "Notificação", JOptionPane.INFORMATION_MESSAGE);
+		}else {
+			JOptionPane.showMessageDialog(TelaFoto5.this, mensagemErro, "Erro", JOptionPane.ERROR_MESSAGE);
+			telaPrincipal.telaFoto1 = new TelaFoto1(telaPrincipal);
+			telaPrincipal.telaFoto1.setVisible(true);
+		}
+		
+	}
 	
 	private void carregarFoto() {
 		JFileChooser jfc = new JFileChooser();
