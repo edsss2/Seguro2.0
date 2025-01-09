@@ -6,27 +6,22 @@ import java.sql.PreparedStatement;
 
 import controle.Conexao;
 
-public class DaoImages {
+public class DaoImagesE {
 	
-	private int idEmpresa;
 	private int idEquipamento;
-	private int geradorId = 0;
 	private int geradorIdEquipamento = 0;
 	
 	private static PreparedStatement stmt = null;
 	private static Connection conn = null;
 	
-	public DaoImages() {
-		geradorId++;
-		this.idEmpresa = geradorId;
+	public DaoImagesE() {
+		geradorIdEquipamento++;
+		this.idEquipamento = geradorIdEquipamento;
 	}
 	
 	private static final String CRIAR_EQUIPAMENTO = "INSERT INTO imagens_equipamento (id_equipamento, frente, etiqueta, verso, "
 			+ "evidencia_danos, local_instalacao) VALUES (?, null, null, null, null, null)";
 
-	private static final String CRIAR_EMPRESA = "INSERT INTO imagens_empresa (id_empresa, fachada, numero, medidor, "
-			+ "quadro_dijuntores, localizacao) VALUES (?, null, null, null, null, null)";
-	
 	public void criarEquipamento() {
 		String query = CRIAR_EQUIPAMENTO;
 		
@@ -38,37 +33,21 @@ public class DaoImages {
 			stmt.executeUpdate();
 			
 		} catch (Exception e) {
-
-		}
-	}
-	
-	public void criarEmpresa() {
-		String query = CRIAR_EMPRESA;
-		
-		try {
-			conn = Conexao.getConnection();
-			stmt = conn.prepareStatement(query);
-			stmt.setInt(1, this.idEmpresa);
-			
-			stmt.executeUpdate();
-			
-			
-		} catch (Exception e) {
 			System.out.println(e);
 		}
-		
 	}
+
 	
     // Método para salvar uma imagem em uma coluna específica do banco
     public void salvarImagem(String coluna, FileInputStream fis, int tamanho) {
-        String query = "UPDATE imagens_empresa SET " + coluna + " = ? WHERE id_empresa = ?";
+        String query = "UPDATE imagens_equipamento SET " + coluna + " = ? WHERE id_equipamento = ?";
 
         try (Connection conn = Conexao.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setBlob(1, fis, tamanho);
            
-            stmt.setInt(2, this.idEmpresa);
+            stmt.setInt(2, this.idEquipamento);
 
             stmt.executeUpdate();
             System.out.println("Imagem salva com sucesso na coluna: " + coluna);
@@ -78,13 +57,16 @@ public class DaoImages {
         }
     }
 
-	public int getIdEmpresa() {
-		return idEmpresa;
+
+	public int getIdEquipamento() {
+		return idEquipamento;
 	}
 
-	public void setIdEmpresa(int idEmpresa) {
-		this.idEmpresa = idEmpresa;
+
+	public void setIdEquipamento(int idEquipamento) {
+		this.idEquipamento = idEquipamento;
 	}
+
     
     
     

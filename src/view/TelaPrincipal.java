@@ -4,13 +4,13 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -36,11 +36,17 @@ import modelo.Equipamento;
 import modelo.ModeloTabela;
 import modelo.Orcamento;
 import modelo.Segurado;
+import view.empresa.TelaFoto;
 import view.empresa.TelaFoto1;
 import view.empresa.TelaFoto2;
 import view.empresa.TelaFoto3;
 import view.empresa.TelaFoto4;
 import view.empresa.TelaFoto5;
+import view.empresa.TelaFotoEquipamento1;
+import view.empresa.TelaFotoEquipamento2;
+import view.empresa.TelaFotoEquipamento3;
+import view.empresa.TelaFotoEquipamento4;
+import view.empresa.TelaFotoEquipamento5;
 
 public class TelaPrincipal extends JFrame {
 
@@ -87,13 +93,44 @@ public class TelaPrincipal extends JFrame {
 	private String possibilidadeReparo;
 	private JTable table;
 	
-	public static int fotosAdicionadas = 0;
+	public int fotosAdicionadas = 0;
+	public int fotoJaFoiAdicionada1 = 0;
+	public int fotoJaFoiAdicionada2 = 0;
+	public int fotoJaFoiAdicionada3 = 0;
+	public int fotoJaFoiAdicionada4 = 0;
+	public int fotoJaFoiAdicionada5 = 0;
+	
 	
 	public TelaFoto1 telaFoto1;
 	public TelaFoto2 telaFoto2;
 	public TelaFoto3 telaFoto3;
 	public TelaFoto4 telaFoto4;
 	public TelaFoto5 telaFoto5;
+	public TelaFotoEquipamento1 tfe1;
+	public TelaFotoEquipamento2 tfe2;
+	public TelaFotoEquipamento3 tfe3;
+	public TelaFotoEquipamento4 tfe4;
+	public TelaFotoEquipamento5 tfe5;
+	
+	
+	private JButton imagem1;
+	private JButton imagem2;
+	private JButton imagem3;
+	private JButton imagem4;
+	private JButton imagem5;
+	
+	private JButton equImagem1;
+	private JButton equImagem2;
+	private JButton equImagem3;
+	private JButton equImagem4;
+	private JButton equImagem5;
+	
+	public JButton btnSalvar;
+	public JButton btnProsseguir;
+	public JButton btnSalvarEquipamento;
+	public JButton btnProsseguirEquipamento;
+	public JPanel abaEmpresa;
+	public JPanel abaEquipamento;
 	
 	
 	
@@ -136,7 +173,7 @@ public class TelaPrincipal extends JFrame {
 		contentPane.add(tabbedPane);
 		tabbedPane.setFont(new Font("Arial", Font.PLAIN, 18));
 		
-		JPanel abaEmpresa = new JPanel();
+		abaEmpresa = new JPanel();
 		tabbedPane.addTab("Empresa", null, abaEmpresa, null);
 		abaEmpresa.setLayout(null);
 		
@@ -394,41 +431,68 @@ public class TelaPrincipal extends JFrame {
 		lblImagens.setBounds(622, 415, 100, 35);
 		abaEmpresa.add(lblImagens);
 		
-		JPanel painelImagens = new JPanel();
-		painelImagens.setBounds(622, 450, 420, 90);
-		abaEmpresa.add(painelImagens);
-		painelImagens.setLayout(null);
+		JPanel painelImagensEmpresa = new JPanel();
+		painelImagensEmpresa.setBounds(622, 450, 420, 90);
+		abaEmpresa.add(painelImagensEmpresa);
+		painelImagensEmpresa.setLayout(null);
 		
-		JButton imagem1 = new JButton("");
+		imagem1 = new JButton("");
+		imagem1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				telaFoto1.setVisible(true);
+			}
+		});
 		imagem1.setIcon(new ImageIcon("Z:\\Projetos\\seguro\\src\\img\\icons8-imagem-64.png"));
 		imagem1.setBounds(0, 0, 80, 80);
-		painelImagens.add(imagem1);
+		painelImagensEmpresa.add(imagem1);
 		
-		JButton imagem2 = new JButton("");
+		imagem2 = new JButton("");
+		imagem2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				telaFoto2.setVisible(true);
+			}
+		});
 		imagem2.setIcon(new ImageIcon("Z:\\Projetos\\seguro\\src\\img\\icons8-imagem-64.png"));
 		imagem2.setBounds(80, 0, 80, 80);
-		painelImagens.add(imagem2);
+		painelImagensEmpresa.add(imagem2);
 		
-		JButton imagem3 = new JButton("");
+		imagem3 = new JButton("");
+		imagem3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				telaFoto3.setVisible(true);
+			}
+		});
 		imagem3.setIcon(new ImageIcon("Z:\\Projetos\\seguro\\src\\img\\icons8-imagem-64.png"));
 		imagem3.setBounds(160, 0, 80, 80);
-		painelImagens.add(imagem3);
+		painelImagensEmpresa.add(imagem3);
 		
-		JButton imagem4 = new JButton("");
+		imagem4 = new JButton("");
+		imagem4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				telaFoto4.setVisible(true);
+			}
+		});
 		imagem4.setIcon(new ImageIcon("Z:\\Projetos\\seguro\\src\\img\\icons8-imagem-64.png"));
 		imagem4.setBounds(240, 0, 80, 80);
-		painelImagens.add(imagem4);
+		painelImagensEmpresa.add(imagem4);
 		
-		JButton imagem5 = new JButton("");
+		imagem5 = new JButton("");
+		imagem5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				telaFoto5.setVisible(true);
+			}
+		});
 		imagem5.setIcon(new ImageIcon("Z:\\Projetos\\seguro\\src\\img\\icons8-imagem-64.png"));
 		imagem5.setBounds(320, 0, 80, 80);
-		painelImagens.add(imagem5);
+		painelImagensEmpresa.add(imagem5);
+
 		
 		JButton btnAdicionarFotos = new JButton("Adicionar fotos");
 		btnAdicionarFotos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				telaFoto1 = new TelaFoto1(TelaPrincipal.this);
 				telaFoto1.setVisible(true);
+				
 			}
 		});
 		btnAdicionarFotos.setBackground(Color.LIGHT_GRAY);
@@ -436,12 +500,10 @@ public class TelaPrincipal extends JFrame {
 		btnAdicionarFotos.setBounds(22, 530, 130, 35);
 		abaEmpresa.add(btnAdicionarFotos);
 		
-		
-		
 		/* Para salvar a assistencia ou o segurado é preciso que se salve o endereço de cada um, para que
 		 * no banco de dados já exista a chave estrangeira. 
 		 */
-		JButton btnSalvar = new JButton("Salvar");
+		btnSalvar = new JButton("Salvar");
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -474,16 +536,11 @@ public class TelaPrincipal extends JFrame {
 		btnSalvar.setBackground(Color.LIGHT_GRAY);
 		btnSalvar.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 14));
 		btnSalvar.setBounds(170, 530, 100, 35);
-		if(fotosAdicionadas > 0) {
-			abaEmpresa.add(btnSalvar);
-		}
 		
-		JButton btnProsseguir = new JButton("Prosseguir");
+		btnProsseguir = new JButton("Prosseguir");
 		btnProsseguir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				//TelaFoto1 novaTela = new TelaFoto1();
-				//novaTela.setVisible(true);
 				
 				tabbedPane.setSelectedIndex(1);
 			}
@@ -491,15 +548,11 @@ public class TelaPrincipal extends JFrame {
 		btnProsseguir.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 14));
 		btnProsseguir.setBackground(Color.LIGHT_GRAY);
 		btnProsseguir.setBounds(290, 530, 100, 35);
-		if(fotosAdicionadas > 0) {
-			abaEmpresa.add(btnProsseguir);
-		}
-		
 
 		
 		//aba Equipamento
 		
-		JPanel abaEquipamento = new JPanel();
+		abaEquipamento = new JPanel();
 		tabbedPane.addTab("Equipamento", null, abaEquipamento, null);
 		abaEquipamento.setLayout(null);
 		
@@ -653,7 +706,7 @@ public class TelaPrincipal extends JFrame {
 		abaEquipamento.add(btnRemoverLinha);
 		
 		
-		JButton btnSalvarEquipamento = new JButton("Salvar");
+		btnSalvarEquipamento = new JButton("Salvar");
 		btnSalvarEquipamento.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -692,22 +745,80 @@ public class TelaPrincipal extends JFrame {
 			}
 		});
 		
-		btnSalvarEquipamento.setBorder(BorderFactory.createEtchedBorder());
 		btnSalvarEquipamento.setBackground(Color.LIGHT_GRAY);
 		btnSalvarEquipamento.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 14));
 		btnSalvarEquipamento.setBounds(870, 500, 100, 35);
 		abaEquipamento.add(btnSalvarEquipamento);
 		
-		JButton btnProsseguirEquipamento = new JButton("Prosseguir");
+		btnProsseguirEquipamento = new JButton("Prosseguir");
 		btnProsseguirEquipamento.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
 		btnProsseguirEquipamento.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 14));
-		btnProsseguirEquipamento.setBorder(UIManager.getBorder("DesktopIcon.border"));
 		btnProsseguirEquipamento.setBackground(Color.LIGHT_GRAY);
 		btnProsseguirEquipamento.setBounds(990, 500, 100, 35);
 		abaEquipamento.add(btnProsseguirEquipamento);
+		
+		JLabel lblImagensEquipamento = new JLabel("Imagens:");
+		lblImagensEquipamento.setFont(new Font("Arial Black", Font.PLAIN, 15));
+		lblImagensEquipamento.setBounds(622, 335, 100, 35);
+		abaEquipamento.add(lblImagensEquipamento);
+		
+		JPanel painelImagensEquipamento = new JPanel();
+		painelImagensEquipamento.setBounds(622, 370, 420, 90);
+		abaEquipamento.add(painelImagensEquipamento);
+		painelImagensEquipamento.setLayout(null);
+		
+		equImagem1 = new JButton("");
+		equImagem1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tfe1.setVisible(true);
+			}
+		});
+		equImagem1.setIcon(new ImageIcon("Z:\\Projetos\\seguro\\src\\img\\icons8-imagem-64.png"));
+		equImagem1.setBounds(0, 0, 80, 80);
+		painelImagensEquipamento.add(equImagem1);
+		
+		equImagem2 = new JButton("");
+		equImagem2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tfe2.setVisible(true);
+			}
+		});
+		equImagem2.setIcon(new ImageIcon("Z:\\Projetos\\seguro\\src\\img\\icons8-imagem-64.png"));
+		equImagem2.setBounds(80, 0, 80, 80);
+		painelImagensEquipamento.add(equImagem2);
+		
+		equImagem3 = new JButton("");
+		equImagem3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tfe3.setVisible(true);
+			}
+		});
+		equImagem3.setIcon(new ImageIcon("Z:\\Projetos\\seguro\\src\\img\\icons8-imagem-64.png"));
+		equImagem3.setBounds(160, 0, 80, 80);
+		painelImagensEquipamento.add(equImagem3);
+		
+		equImagem4 = new JButton("");
+		equImagem4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tfe4.setVisible(true);
+			}
+		});
+		equImagem4.setIcon(new ImageIcon("Z:\\Projetos\\seguro\\src\\img\\icons8-imagem-64.png"));
+		equImagem4.setBounds(240, 0, 80, 80);
+		painelImagensEquipamento.add(equImagem4);
+		
+		equImagem5 = new JButton("");
+		equImagem5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tfe5.setVisible(true);
+			}
+		});
+		equImagem5.setIcon(new ImageIcon("Z:\\Projetos\\seguro\\src\\img\\icons8-imagem-64.png"));
+		equImagem5.setBounds(320, 0, 80, 80);
+		painelImagensEquipamento.add(equImagem5);
 
 	
 		
@@ -780,8 +891,45 @@ public class TelaPrincipal extends JFrame {
         doc.setDocumentFilter(new InputFilter(tipo));
     }
 	
-	private void trocarIcones() {
-		
+	public void trocarIcones(TelaFoto telaFoto, JButton botao) {
+		if (telaFoto.getFoto() != null) {
+			botao.setIcon(new ImageIcon(redmensionarImagem(telaFoto.getFoto())));
+		}
+	}
+	public void trocarIcones() {
+		if (telaFoto1.getFoto() != null) {
+			imagem1.setIcon(new ImageIcon(redmensionarImagem(telaFoto1.getFoto())));
+		}
+		if (telaFoto2.getFoto() != null) {
+			imagem2.setIcon(new ImageIcon(redmensionarImagem(telaFoto2.getFoto())));
+		}
+		if (telaFoto3.getFoto() != null) {
+			imagem3.setIcon(new ImageIcon(redmensionarImagem(telaFoto3.getFoto())));
+		}
+		if (telaFoto4.getFoto() != null) {
+			imagem4.setIcon(new ImageIcon(redmensionarImagem(telaFoto4.getFoto())));
+		}
+		if (telaFoto5.getFoto() != null) {
+			imagem5.setIcon(new ImageIcon(redmensionarImagem(telaFoto5.getFoto())));
+			
+		}
+	}
+	
+	private Image redmensionarImagem(Image image) {
+		Image imagemRedimensionada = image.getScaledInstance(
+			    imagem1.getWidth(), 
+			    imagem1.getHeight(), 
+			    Image.SCALE_SMOOTH 
+			);
+		return imagemRedimensionada;
+	}
+	
+	public void adicionarBotoes(JPanel aba, JButton botao1, JButton botao2) {
+		if(fotosAdicionadas > 0) {
+			aba.add(botao1);
+			aba.add(botao2);
+		}
+
 	}
 	
 	private void apagarCampos() {

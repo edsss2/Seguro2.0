@@ -1,125 +1,44 @@
 package view.empresa;
 
-import java.awt.Component;
-import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.Image;
-import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.FileInputStream;
-
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import dao.DaoImages;
 import view.TelaPrincipal;
 
-import java.awt.Color;
-
-public class TelaFoto4 extends JFrame {
+public class TelaFoto4 extends TelaFoto {
 
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
-	
-	private int tamanho;
-	private FileInputStream fis;
-	
-	private JLabel lblFoto;
-	private JLabel lblDescricaoFoto;
-	
-	private JButton btnProsseguir;
-	private JButton btnCarregarImagem;
 
-	private TelaPrincipal telaPrincipal;
-	
 	public TelaFoto4(TelaPrincipal telaPrincipal) {
-		this.telaPrincipal = telaPrincipal;
-		
-		setTitle("ADICIONE AS FOTOS DA RESIDÊNCIA");
-		setResizable(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 650, 510);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
-		
-		lblFoto = new JLabel("");
-		lblFoto.setIcon(new ImageIcon("Z:\\Projetos\\seguro\\src\\img\\photo_icon.png"));
-		lblFoto.setBounds(189, 87, 256, 256);
-		contentPane.add(lblFoto);
-		
-		lblDescricaoFoto = new JLabel("4- Quadro de Dijuntores");
-		lblDescricaoFoto.setFont(new Font("Arial", Font.PLAIN, 17));
-		lblDescricaoFoto.setBounds(20, 25, 280, 35);
-		contentPane.add(lblDescricaoFoto);
-		
-		btnProsseguir = new JButton("Prosseguir");
-		btnProsseguir.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				dispose();
-				telaPrincipal.telaFoto5 = new TelaFoto5(telaPrincipal);	
-				telaPrincipal.telaFoto5.setVisible(true);
-				
-			}
-		});
-		btnProsseguir.setBackground(SystemColor.activeCaptionBorder);
-		btnProsseguir.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btnProsseguir.setBounds(485, 390, 90, 35);
-		contentPane.add(btnProsseguir);
-		
-		btnCarregarImagem = new JButton("Carregar Imagem");
-		btnCarregarImagem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				carregarFoto();
-				
-				DaoImages dao = new DaoImages();
-				int a = dao.getIdEmpresa() - 1;
-				dao.setIdEmpresa(a);
-
-				dao.salvarImagem("quadro_dijuntores", fis, tamanho);
-
-			}
-		});
-		btnCarregarImagem.setAlignmentX(Component.CENTER_ALIGNMENT);
-		btnCarregarImagem.setBackground(Color.LIGHT_GRAY);
-		btnCarregarImagem.setForeground(SystemColor.textHighlight);
-		btnCarregarImagem.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btnCarregarImagem.setBounds(345, 390, 130, 35);
-		contentPane.add(btnCarregarImagem);
-		
+		super(telaPrincipal, "ADICIONE AS FOTOS DA RESIDÊNCIA", "4- Quadro de Dijuntores");
 	}
-	
-	private void carregarFoto() {
-		JFileChooser jfc = new JFileChooser();
-		jfc.setDialogTitle("Selecionar arquivo");
-		jfc.setFileFilter(new FileNameExtensionFilter("Arquivo de imagens(*.PNG, *.JPG, *.JPEG)", "png", "jpg", "jpeg"));
-		int resultado = jfc.showOpenDialog(this);
-		
-		if(resultado ==JFileChooser.APPROVE_OPTION) {
-			TelaPrincipal.fotosAdicionadas++;
-			try {
-				fis = new FileInputStream(jfc.getSelectedFile());
-				tamanho = (int) jfc.getSelectedFile().length();
-				Image foto = ImageIO.read(jfc.getSelectedFile()).getScaledInstance(lblFoto.getWidth(), lblFoto.getHeight(),
-						Image.SCALE_SMOOTH);
-				lblFoto.setIcon(new ImageIcon(foto));
-				lblFoto.updateUI();
-			} catch (Exception e) {
-				System.out.println(e);
+
+	@Override
+	protected void acaoProsseguir(ActionEvent e) {
+		dispose();
+					
+		telaPrincipal.telaFoto5 = new TelaFoto5(telaPrincipal);
+		telaPrincipal.telaFoto5.addWindowListener(new java.awt.event.WindowAdapter() {
+			@Override
+			public void windowClosed(java.awt.event.WindowEvent e) {
+			            	
+				telaPrincipal.trocarIcones();	//troca os icones da telaPrincipal pelas fotos
+			    telaPrincipal.adicionarBotoes(telaPrincipal.abaEmpresa,
+			                                        telaPrincipal.btnSalvar, 
+			                                        telaPrincipal.btnProsseguir);
+			    telaPrincipal.repaint();
 			}
+		});				
+		telaPrincipal.telaFoto5.setVisible(true);
+	}
+
+		@Override 
+		protected void salvarFotoCarregada() {
+			DaoImages dao = new DaoImages();
+			int a = dao.getIdEmpresa() - 1;
+			dao.setIdEmpresa(a);
+
+			dao.salvarImagem("quadro_dijuntores", fis, tamanho);
 		}
-		
-	}
-	
+			
 }
