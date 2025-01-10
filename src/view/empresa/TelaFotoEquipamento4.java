@@ -16,13 +16,25 @@ public class TelaFotoEquipamento4 extends TelaFoto {
 	@Override
 	protected void acaoProsseguir(ActionEvent e) {
 		dispose();
-		telaPrincipal.tfe5 = new TelaFotoEquipamento5(telaPrincipal);
-		telaPrincipal.tfe5.setVisible(true);
 		
-		telaPrincipal.adicionarBotoes(telaPrincipal.abaEquipamento, 
+		telaPrincipal.tfe5 = new TelaFotoEquipamento5(telaPrincipal);
+		telaPrincipal.tfe5.addWindowListener(new java.awt.event.WindowAdapter() {
+			@Override
+			public void windowClosed(java.awt.event.WindowEvent e) {
+			            	
+				telaPrincipal.trocarIcones(telaPrincipal.tfe1, telaPrincipal.equImagem1);
+				telaPrincipal.trocarIcones(telaPrincipal.tfe2, telaPrincipal.equImagem2);
+				telaPrincipal.trocarIcones(telaPrincipal.tfe3, telaPrincipal.equImagem3);
+				telaPrincipal.trocarIcones(telaPrincipal.tfe4, telaPrincipal.equImagem4);
+				telaPrincipal.trocarIcones(telaPrincipal.tfe5, telaPrincipal.equImagem5);
+		
+				telaPrincipal.adicionarBotoes(telaPrincipal.abaEquipamento, 
 										telaPrincipal.btnProsseguirEquipamento, 
 										telaPrincipal.btnSalvarEquipamento);
+			}
+		});
 		
+		telaPrincipal.tfe5.setVisible(true);
 	}
 	
 	@Override 

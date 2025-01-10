@@ -119,16 +119,17 @@ public class TelaPrincipal extends JFrame {
 	private JButton imagem4;
 	private JButton imagem5;
 	
-	private JButton equImagem1;
-	private JButton equImagem2;
-	private JButton equImagem3;
-	private JButton equImagem4;
-	private JButton equImagem5;
+	public JButton equImagem1;
+	public JButton equImagem2;
+	public JButton equImagem3;
+	public JButton equImagem4;
+	public JButton equImagem5;
 	
 	public JButton btnSalvar;
 	public JButton btnProsseguir;
 	public JButton btnSalvarEquipamento;
 	public JButton btnProsseguirEquipamento;
+	private JButton btnAddFotoEquipamento;
 	public JPanel abaEmpresa;
 	public JPanel abaEquipamento;
 	
@@ -748,7 +749,6 @@ public class TelaPrincipal extends JFrame {
 		btnSalvarEquipamento.setBackground(Color.LIGHT_GRAY);
 		btnSalvarEquipamento.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 14));
 		btnSalvarEquipamento.setBounds(870, 500, 100, 35);
-		abaEquipamento.add(btnSalvarEquipamento);
 		
 		btnProsseguirEquipamento = new JButton("Prosseguir");
 		btnProsseguirEquipamento.addActionListener(new ActionListener() {
@@ -758,7 +758,19 @@ public class TelaPrincipal extends JFrame {
 		btnProsseguirEquipamento.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 14));
 		btnProsseguirEquipamento.setBackground(Color.LIGHT_GRAY);
 		btnProsseguirEquipamento.setBounds(990, 500, 100, 35);
-		abaEquipamento.add(btnProsseguirEquipamento);
+		
+		btnAddFotoEquipamento = new JButton("Adicionar fotos");
+		btnAddFotoEquipamento.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tfe1 = new TelaFotoEquipamento1(TelaPrincipal.this);
+				tfe1.setVisible(true);
+				
+			}
+		});
+		btnAddFotoEquipamento.setBackground(Color.LIGHT_GRAY);
+		btnAddFotoEquipamento.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 14));
+		btnAddFotoEquipamento.setBounds(720, 500, 130, 35);
+		abaEquipamento.add(btnAddFotoEquipamento);
 		
 		JLabel lblImagensEquipamento = new JLabel("Imagens:");
 		lblImagensEquipamento.setFont(new Font("Arial Black", Font.PLAIN, 15));
@@ -824,6 +836,7 @@ public class TelaPrincipal extends JFrame {
 		
 	}
 
+	//abaEmpresa
 	private void criarInstancias() {
 	    try {
 	        // Valida e obtém os valores digitados pelo usuário
@@ -868,6 +881,7 @@ public class TelaPrincipal extends JFrame {
 	    }
 	}
 	
+	//abaEquipamento
 	private void salvarTabelaOrcamento(DAO dao, int idEquipamento) {
 		for(int i = 0; i < orcamentos.size(); i++) {
 			Orcamento orcamento = orcamentos.get(i);
@@ -875,27 +889,32 @@ public class TelaPrincipal extends JFrame {
 		}
 	}
 
+	//abaEmpresa
 	private int resgatarId(Endereco endereco) {
 		int id = endereco.getIdEndereco();
 		return id;
 	}
 	
-	
+	//abaEquipamento
 	private int resgatarId(Equipamento equipamento) {
 		int id = equipamento.getIdEquipamento();
 		return id;
 	}
 	
+	//abaEmpresa
 	private static void limitarEntrada(JTextField textField, int tipo) {
         AbstractDocument doc = (AbstractDocument) textField.getDocument();
         doc.setDocumentFilter(new InputFilter(tipo));
     }
 	
+	//pras duas
 	public void trocarIcones(TelaFoto telaFoto, JButton botao) {
 		if (telaFoto.getFoto() != null) {
 			botao.setIcon(new ImageIcon(redmensionarImagem(telaFoto.getFoto())));
 		}
 	}
+	
+	//nenhuma
 	public void trocarIcones() {
 		if (telaFoto1.getFoto() != null) {
 			imagem1.setIcon(new ImageIcon(redmensionarImagem(telaFoto1.getFoto())));
@@ -915,6 +934,7 @@ public class TelaPrincipal extends JFrame {
 		}
 	}
 	
+	//pras duas
 	private Image redmensionarImagem(Image image) {
 		Image imagemRedimensionada = image.getScaledInstance(
 			    imagem1.getWidth(), 
@@ -924,6 +944,7 @@ public class TelaPrincipal extends JFrame {
 		return imagemRedimensionada;
 	}
 	
+	//pras duas
 	public void adicionarBotoes(JPanel aba, JButton botao1, JButton botao2) {
 		if(fotosAdicionadas > 0) {
 			aba.add(botao1);
@@ -932,6 +953,7 @@ public class TelaPrincipal extends JFrame {
 
 	}
 	
+	//abaEmpresa
 	private void apagarCampos() {
 		txtCnpj.setText("");
 		txtNome.setText("");
