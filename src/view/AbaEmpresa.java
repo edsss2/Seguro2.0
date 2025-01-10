@@ -23,7 +23,6 @@ import modelo.Assistencia;
 import modelo.Endereco;
 import modelo.Segurado;
 import view.empresa.TelaFoto;
-import view.empresa.TelaFoto;
 import view.empresa.TelaFoto1;
 
 public class AbaEmpresa extends JPanel {
@@ -43,19 +42,10 @@ public class AbaEmpresa extends JPanel {
 	
 	public JButton imagem1, imagem2, imagem3, imagem4, imagem5, btnSalvar, btnProsseguir;
 	
-	public TelaFoto1 tf1;
-	public TelaFoto1 tf2;
-	public TelaFoto1 tf3;
-	public TelaFoto1 tf4;
-	public TelaFoto1 tf5;
-	
 	private JLabel lblDadosAssistencia, lblEndereco, lblBairro, lblRua, lblNumero, lblCidade, lblEstado, lblCep, lblCnpj, lblNome, 
 	lblTelefone, lblTecnico, lblDadosSegurado, lblSeguradoEndereco, lblSeguradoBairro, lblSeguradoRua, lblSeguradoNumero, lblSeguradoCidade,
 	lblSeguradoEstado, lblSeguradoCep, lblSeguradoNome, lblImagens;
 
-	private void mostrarTela(ActionEvent e, TelaFoto tf) {
-		tf.setVisible(true);
-	}
 	
 	//metodo usado no botao salvar
 	public void salvarDados() {
@@ -415,7 +405,8 @@ public class AbaEmpresa extends JPanel {
 		lblImagens.setBounds(622, 415, 100, 35);
 		add(lblImagens);
 		
-		PainelImagens painelImagens = new PainelImagens(tf1, tf2, tf3, tf4, tf5);
+		PainelImagens painelImagens = new PainelImagens(telaPrincipal.tf1, telaPrincipal.tf2, telaPrincipal.tf3, 
+														telaPrincipal.tf4, telaPrincipal.tf5);
 		painelImagens.setBounds(622, 450, 420, 90);
 		add(painelImagens);
 
@@ -423,8 +414,8 @@ public class AbaEmpresa extends JPanel {
 		JButton btnAdicionarFotos = new JButton("Adicionar fotos");
 		btnAdicionarFotos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				tf1 = new TelaFoto1(telaPrincipal);
-				tf1.setVisible(true);
+				telaPrincipal.tf1 = new TelaFoto1(telaPrincipal);
+				telaPrincipal.tf1.setVisible(true);
 				
 			}
 		});

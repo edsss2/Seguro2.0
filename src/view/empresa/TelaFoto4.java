@@ -17,12 +17,17 @@ public class TelaFoto4 extends TelaFoto {
 	protected void acaoProsseguir(ActionEvent e) {
 		dispose();
 					
-		telaPrincipal.telaFoto5 = new TelaFoto5(telaPrincipal);
+		telaPrincipal.tf5 = new TelaFoto5(telaPrincipal);
 		telaPrincipal.telaFoto5.addWindowListener(new java.awt.event.WindowAdapter() {
 			@Override
 			public void windowClosed(java.awt.event.WindowEvent e) {
 			            	
-				telaPrincipal.trocarIcones();	//troca os icones da telaPrincipal pelas fotos
+				telaPrincipal.trocarIcones(telaPrincipal.tfe1, telaPrincipal.equImagem1);
+				telaPrincipal.trocarIcones(telaPrincipal.tfe2, telaPrincipal.equImagem2);
+				telaPrincipal.trocarIcones(telaPrincipal.tfe3, telaPrincipal.equImagem3);
+				telaPrincipal.trocarIcones(telaPrincipal.tfe4, telaPrincipal.equImagem4);
+				telaPrincipal.trocarIcones(telaPrincipal.tfe5, telaPrincipal.equImagem5);
+				
 			    telaPrincipal.adicionarBotoes(telaPrincipal.abaEmpresa,
 			                                        telaPrincipal.btnSalvar, 
 			                                        telaPrincipal.btnProsseguir);

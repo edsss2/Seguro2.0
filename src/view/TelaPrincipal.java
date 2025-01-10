@@ -100,12 +100,12 @@ public class TelaPrincipal extends JFrame {
 	public int fotoJaFoiAdicionada4 = 0;
 	public int fotoJaFoiAdicionada5 = 0;
 	
+	public TelaFoto1 tf1;
+	public TelaFoto2 tf2;
+	public TelaFoto1 tf3;
+	public TelaFoto1 tf4;
+	public TelaFoto1 tf5;
 	
-	public TelaFoto1 telaFoto1;
-	public TelaFoto2 telaFoto2;
-	public TelaFoto3 telaFoto3;
-	public TelaFoto4 telaFoto4;
-	public TelaFoto5 telaFoto5;
 	public TelaFotoEquipamento1 tfe1;
 	public TelaFotoEquipamento2 tfe2;
 	public TelaFotoEquipamento3 tfe3;
