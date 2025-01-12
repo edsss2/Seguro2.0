@@ -18,6 +18,10 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+<<<<<<< HEAD
+=======
+import view.PainelImagens;
+>>>>>>> 12d6876 (Abas separadas)
 import view.TelaPrincipal;
 
 public abstract class TelaFoto extends JFrame {
@@ -35,10 +39,19 @@ public abstract class TelaFoto extends JFrame {
 	protected JButton btnCarregarImagem;
 	
 	protected TelaPrincipal telaPrincipal;
+<<<<<<< HEAD
 	protected Image foto;
 	
 	public TelaFoto(TelaPrincipal telaPrincipal, String titulo, String descricao) {
 		this.telaPrincipal = telaPrincipal;
+=======
+	protected PainelImagens painelImagens;
+	protected Image foto;
+	
+	public TelaFoto(TelaPrincipal telaPrincipal, String titulo, String descricao, PainelImagens painelImagens) {
+		this.telaPrincipal = telaPrincipal;
+		this.painelImagens = painelImagens;
+>>>>>>> 12d6876 (Abas separadas)
 		
 		setTitle(titulo);
 		setResizable(false);
@@ -87,10 +100,14 @@ public abstract class TelaFoto extends JFrame {
 		int resultado = jfc.showOpenDialog(this);
 		
 		if(resultado ==JFileChooser.APPROVE_OPTION) {
+<<<<<<< HEAD
 			if(telaPrincipal.fotoJaFoiAdicionada1 < 1) {
 				telaPrincipal.fotosAdicionadas++;
 				telaPrincipal.fotoJaFoiAdicionada1++;
 			}
+=======
+			telaPrincipal.fotosAdicionadas++;
+>>>>>>> 12d6876 (Abas separadas)
 			try {
 				fis = new FileInputStream(jfc.getSelectedFile());
 				tamanho = (int) jfc.getSelectedFile().length();

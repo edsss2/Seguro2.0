@@ -7,7 +7,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+<<<<<<< HEAD
 import javax.swing.ImageIcon;
+=======
+>>>>>>> 12d6876 (Abas separadas)
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -22,7 +25,10 @@ import dao.DAO;
 import modelo.Assistencia;
 import modelo.Endereco;
 import modelo.Segurado;
+<<<<<<< HEAD
 import view.empresa.TelaFoto;
+=======
+>>>>>>> 12d6876 (Abas separadas)
 import view.empresa.TelaFoto1;
 
 public class AbaEmpresa extends JPanel {
@@ -40,15 +46,28 @@ public class AbaEmpresa extends JPanel {
 	Assistencia assistencia = new Assistencia();
 	Segurado segurado = new Segurado();
 	
+<<<<<<< HEAD
 	public JButton imagem1, imagem2, imagem3, imagem4, imagem5, btnSalvar, btnProsseguir;
+=======
+	public JButton btnSalvar, btnProsseguir, btnAdicionarFotos;
+>>>>>>> 12d6876 (Abas separadas)
 	
 	private JLabel lblDadosAssistencia, lblEndereco, lblBairro, lblRua, lblNumero, lblCidade, lblEstado, lblCep, lblCnpj, lblNome, 
 	lblTelefone, lblTecnico, lblDadosSegurado, lblSeguradoEndereco, lblSeguradoBairro, lblSeguradoRua, lblSeguradoNumero, lblSeguradoCidade,
 	lblSeguradoEstado, lblSeguradoCep, lblSeguradoNome, lblImagens;
+<<<<<<< HEAD
 
 	
 	//metodo usado no botao salvar
 	public void salvarDados() {
+=======
+	
+	public PainelImagens painelImagens;
+
+	
+	//metodo usado no botao salvar
+	public void salvarDados(ActionEvent e) {
+>>>>>>> 12d6876 (Abas separadas)
 		
 		try {
 			DAO dao = new DAO();
@@ -405,16 +424,27 @@ public class AbaEmpresa extends JPanel {
 		lblImagens.setBounds(622, 415, 100, 35);
 		add(lblImagens);
 		
+<<<<<<< HEAD
 		PainelImagens painelImagens = new PainelImagens(telaPrincipal.tf1, telaPrincipal.tf2, telaPrincipal.tf3, 
+=======
+		painelImagens = new PainelImagens(telaPrincipal.tf1, telaPrincipal.tf2, telaPrincipal.tf3, 
+>>>>>>> 12d6876 (Abas separadas)
 														telaPrincipal.tf4, telaPrincipal.tf5);
 		painelImagens.setBounds(622, 450, 420, 90);
 		add(painelImagens);
 
 		
+<<<<<<< HEAD
 		JButton btnAdicionarFotos = new JButton("Adicionar fotos");
 		btnAdicionarFotos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				telaPrincipal.tf1 = new TelaFoto1(telaPrincipal);
+=======
+		btnAdicionarFotos = new JButton("Adicionar fotos");
+		btnAdicionarFotos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				telaPrincipal.tf1 = new TelaFoto1(telaPrincipal, painelImagens);
+>>>>>>> 12d6876 (Abas separadas)
 				telaPrincipal.tf1.setVisible(true);
 				
 			}
@@ -428,6 +458,7 @@ public class AbaEmpresa extends JPanel {
 		 * no banco de dados já exista a chave estrangeira. 
 		 */
 		btnSalvar = new JButton("Salvar");
+<<<<<<< HEAD
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				salvarDados();
@@ -456,6 +487,9 @@ public class AbaEmpresa extends JPanel {
 				
 			}
 		});
+=======
+		btnSalvar.addActionListener(this :: salvarDados);
+>>>>>>> 12d6876 (Abas separadas)
 		
 		btnSalvar.setBackground(Color.LIGHT_GRAY);
 		btnSalvar.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 14));

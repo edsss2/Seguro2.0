@@ -1,10 +1,15 @@
 package view;
 
+<<<<<<< HEAD
 import java.awt.Color;
+=======
+
+>>>>>>> 12d6876 (Abas separadas)
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Image;
+<<<<<<< HEAD
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -36,6 +41,18 @@ import modelo.Equipamento;
 import modelo.ModeloTabela;
 import modelo.Orcamento;
 import modelo.Segurado;
+=======
+
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+
+import javax.swing.border.EmptyBorder;
+
+>>>>>>> 12d6876 (Abas separadas)
 import view.empresa.TelaFoto;
 import view.empresa.TelaFoto1;
 import view.empresa.TelaFoto2;
@@ -52,6 +69,7 @@ public class TelaPrincipal extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+<<<<<<< HEAD
 	private JTextField txtCnpj;
 	private JTextField txtNome;
 	private JTextField txtTelefone;	
@@ -105,12 +123,23 @@ public class TelaPrincipal extends JFrame {
 	public TelaFoto1 tf3;
 	public TelaFoto1 tf4;
 	public TelaFoto1 tf5;
+=======
+	
+	public int fotosAdicionadas = 0;
+	
+	public TelaFoto1 tf1;
+	public TelaFoto2 tf2;
+	public TelaFoto3 tf3;
+	public TelaFoto4 tf4;
+	public TelaFoto5 tf5;
+>>>>>>> 12d6876 (Abas separadas)
 	
 	public TelaFotoEquipamento1 tfe1;
 	public TelaFotoEquipamento2 tfe2;
 	public TelaFotoEquipamento3 tfe3;
 	public TelaFotoEquipamento4 tfe4;
 	public TelaFotoEquipamento5 tfe5;
+<<<<<<< HEAD
 	
 	
 	private JButton imagem1;
@@ -132,6 +161,11 @@ public class TelaPrincipal extends JFrame {
 	private JButton btnAddFotoEquipamento;
 	public JPanel abaEmpresa;
 	public JPanel abaEquipamento;
+=======
+
+	public AbaEquipamento abaEquipamento;
+	public AbaEmpresa abaEmpresa;
+>>>>>>> 12d6876 (Abas separadas)
 	
 	
 	
@@ -174,6 +208,7 @@ public class TelaPrincipal extends JFrame {
 		contentPane.add(tabbedPane);
 		tabbedPane.setFont(new Font("Arial", Font.PLAIN, 18));
 		
+<<<<<<< HEAD
 		AbaEmpresa abaEmpresa = new AbaEmpresa(TelaPrincipal.this, tabbedPane);
 		//primeiro nulo é o icone, e o segundo tooltip text
 		tabbedPane.addTab("Assistência e Segurado", null, abaEmpresa, null);
@@ -559,14 +594,36 @@ public class TelaPrincipal extends JFrame {
 		if (telaFoto5.getFoto() != null) {
 			imagem5.setIcon(new ImageIcon(redmensionarImagem(telaFoto5.getFoto())));
 			
+=======
+		abaEmpresa = new AbaEmpresa(TelaPrincipal.this, tabbedPane);
+		//primeiro nulo é o icone, e o segundo tooltip text
+		tabbedPane.addTab("Assistência e Segurado", null, abaEmpresa, null);
+
+		abaEquipamento = new AbaEquipamento(TelaPrincipal.this);
+		tabbedPane.addTab("Equipamento",null, abaEquipamento, null);
+	}	
+	
+	//pras duas
+	public void trocarIcones(TelaFoto telaFoto, JButton botao, int a) {
+		if (telaFoto.getFoto() != null) {
+			a++;
+			if (a < 1) {
+				botao.setIcon(new ImageIcon(redmensionarImagem(telaFoto.getFoto())));
+			}
+>>>>>>> 12d6876 (Abas separadas)
 		}
 	}
 	
 	//pras duas
 	private Image redmensionarImagem(Image image) {
 		Image imagemRedimensionada = image.getScaledInstance(
+<<<<<<< HEAD
 			    imagem1.getWidth(), 
 			    imagem1.getHeight(), 
+=======
+			    80, 
+			    80, 
+>>>>>>> 12d6876 (Abas separadas)
 			    Image.SCALE_SMOOTH 
 			);
 		return imagemRedimensionada;
@@ -581,6 +638,7 @@ public class TelaPrincipal extends JFrame {
 
 	}
 	
+<<<<<<< HEAD
 	//abaEmpresa
 	private void apagarCampos() {
 		txtCnpj.setText("");
@@ -601,4 +659,7 @@ public class TelaPrincipal extends JFrame {
 		txtSeguradoEstado.setText("");
 		txtSeguradoNome.setText("");
 	}
+=======
+	
+>>>>>>> 12d6876 (Abas separadas)
 }
