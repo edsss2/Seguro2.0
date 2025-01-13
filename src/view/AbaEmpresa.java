@@ -46,29 +46,17 @@ public class AbaEmpresa extends JPanel {
 	Assistencia assistencia = new Assistencia();
 	Segurado segurado = new Segurado();
 	
-<<<<<<< HEAD
-	public JButton imagem1, imagem2, imagem3, imagem4, imagem5, btnSalvar, btnProsseguir;
-=======
 	public JButton btnSalvar, btnProsseguir, btnAdicionarFotos;
->>>>>>> 12d6876 (Abas separadas)
 	
 	private JLabel lblDadosAssistencia, lblEndereco, lblBairro, lblRua, lblNumero, lblCidade, lblEstado, lblCep, lblCnpj, lblNome, 
 	lblTelefone, lblTecnico, lblDadosSegurado, lblSeguradoEndereco, lblSeguradoBairro, lblSeguradoRua, lblSeguradoNumero, lblSeguradoCidade,
 	lblSeguradoEstado, lblSeguradoCep, lblSeguradoNome, lblImagens;
-<<<<<<< HEAD
-
-	
-	//metodo usado no botao salvar
-	public void salvarDados() {
-=======
 	
 	public PainelImagens painelImagens;
 
 	
 	//metodo usado no botao salvar
 	public void salvarDados(ActionEvent e) {
->>>>>>> 12d6876 (Abas separadas)
-		
 		try {
 			DAO dao = new DAO();
 			criarInstancias();
@@ -304,7 +292,6 @@ public class AbaEmpresa extends JPanel {
 		txtTelefone.setColumns(10);
 		
 		
-		
 		//Segurado
 		
 		lblDadosSegurado = new JLabel("DADOS DO SEGURADO");
@@ -424,27 +411,15 @@ public class AbaEmpresa extends JPanel {
 		lblImagens.setBounds(622, 415, 100, 35);
 		add(lblImagens);
 		
-<<<<<<< HEAD
-		PainelImagens painelImagens = new PainelImagens(telaPrincipal.tf1, telaPrincipal.tf2, telaPrincipal.tf3, 
-=======
 		painelImagens = new PainelImagens(telaPrincipal.tf1, telaPrincipal.tf2, telaPrincipal.tf3, 
->>>>>>> 12d6876 (Abas separadas)
 														telaPrincipal.tf4, telaPrincipal.tf5);
 		painelImagens.setBounds(622, 450, 420, 90);
 		add(painelImagens);
 
-		
-<<<<<<< HEAD
-		JButton btnAdicionarFotos = new JButton("Adicionar fotos");
-		btnAdicionarFotos.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				telaPrincipal.tf1 = new TelaFoto1(telaPrincipal);
-=======
 		btnAdicionarFotos = new JButton("Adicionar fotos");
 		btnAdicionarFotos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				telaPrincipal.tf1 = new TelaFoto1(telaPrincipal, painelImagens);
->>>>>>> 12d6876 (Abas separadas)
 				telaPrincipal.tf1.setVisible(true);
 				
 			}
@@ -454,43 +429,8 @@ public class AbaEmpresa extends JPanel {
 		btnAdicionarFotos.setBounds(22, 530, 130, 35);
 		add(btnAdicionarFotos);
 		
-		/* Para salvar a assistencia ou o segurado é preciso que se salve o endereço de cada um, para que
-		 * no banco de dados já exista a chave estrangeira. 
-		 */
 		btnSalvar = new JButton("Salvar");
-<<<<<<< HEAD
-		btnSalvar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				salvarDados();
-			
-				//Cria a instancia do DAO para salvar no banco de dados
-				DAO dao = new DAO();
-					
-					//Cria instancias das classes modelos a serem salvas
-				criarInstancias();
-					
-				dao.salvarEndereco(enderecoAssistencia);
-				/*Após salvar o endereco é gerado o id daquele endreço que vai para o banco de dados,
-				* uso o metodo "resgatarId" para armazenar esse id em uma variavel, para passar essa variavel
-				* para o metodo de salvar assistencia.
-				*/
-				int idEnderecoAssistencia = resgatarId(enderecoAssistencia);
-				dao.salvarEndereco(enderecoSegurado);
-				int idEnderecoSegurado = resgatarId(enderecoSegurado);
-				dao.salvarAssistencia(assistencia, idEnderecoAssistencia);
-				dao.salvarSegurado(segurado, idEnderecoSegurado);
-				
-				//Apaga os textos dos campos
-				apagarCampos();
-				
-				JOptionPane.showMessageDialog(null, "Salvo com sucesso!", "Mensagem", JOptionPane.INFORMATION_MESSAGE);
-				
-			}
-		});
-=======
 		btnSalvar.addActionListener(this :: salvarDados);
->>>>>>> 12d6876 (Abas separadas)
-		
 		btnSalvar.setBackground(Color.LIGHT_GRAY);
 		btnSalvar.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 14));
 		btnSalvar.setBounds(170, 530, 100, 35);
