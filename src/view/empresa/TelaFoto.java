@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import view.PainelImagens;
 import view.TelaPrincipal;
 
 public abstract class TelaFoto extends JFrame {
@@ -35,10 +36,13 @@ public abstract class TelaFoto extends JFrame {
 	protected JButton btnCarregarImagem;
 	
 	protected TelaPrincipal telaPrincipal;
+	protected PainelImagens painelImagens;
 	protected Image foto;
+	protected int fotoAdd = 0;
 	
-	public TelaFoto(TelaPrincipal telaPrincipal, String titulo, String descricao) {
+	public TelaFoto(TelaPrincipal telaPrincipal, String titulo, String descricao, PainelImagens painelImagens) {
 		this.telaPrincipal = telaPrincipal;
+		this.painelImagens = painelImagens;
 		
 		setTitle(titulo);
 		setResizable(false);
@@ -87,10 +91,6 @@ public abstract class TelaFoto extends JFrame {
 		int resultado = jfc.showOpenDialog(this);
 		
 		if(resultado ==JFileChooser.APPROVE_OPTION) {
-			if(telaPrincipal.fotoJaFoiAdicionada1 < 1) {
-				telaPrincipal.fotosAdicionadas++;
-				telaPrincipal.fotoJaFoiAdicionada1++;
-			}
 			try {
 				fis = new FileInputStream(jfc.getSelectedFile());
 				tamanho = (int) jfc.getSelectedFile().length();
@@ -100,6 +100,7 @@ public abstract class TelaFoto extends JFrame {
 				lblFoto.updateUI();
 				
 				salvarFotoCarregada();
+				AdicionaNaVariavelDeFotos();
 			} catch (Exception a) {
 				System.out.println(a);
 			}
@@ -114,11 +115,14 @@ public abstract class TelaFoto extends JFrame {
 	protected abstract void acaoProsseguir(ActionEvent e);
 
     protected void salvarFotoCarregada() {
-
-
     }
 
-
+    protected void AdicionaNaVariavelDeFotos() {
+    	fotoAdd++;
+		if (fotoAdd < 2) {
+			telaPrincipal.fotosAdicionadas++;
+		}
+    }
 	
 	
 }

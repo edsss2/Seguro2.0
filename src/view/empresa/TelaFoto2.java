@@ -3,22 +3,25 @@ package view.empresa;
 import java.awt.event.ActionEvent;
 
 import dao.DaoImages;
+import view.PainelImagens;
 import view.TelaPrincipal;
 
 public class TelaFoto2 extends TelaFoto {
 
 	private static final long serialVersionUID = 1L;
 
-	public TelaFoto2(TelaPrincipal telaPrincipal) {
-		super(telaPrincipal, "ADICIONE AS FOTOS DA RESIDÊNCIA", "2- Número da Residência");					
+	public TelaFoto2(TelaPrincipal telaPrincipal, PainelImagens painelImagens) {
+		super(telaPrincipal, "ADICIONE AS FOTOS DA RESIDÊNCIA", "2- Número da Residência", painelImagens);					
 	}
 
 	@Override
 	protected void acaoProsseguir(ActionEvent e) {
 		dispose();
 
-		telaPrincipal.telaFoto3 = new TelaFoto3(telaPrincipal);
-		telaPrincipal.telaFoto3.setVisible(true);
+		if (telaPrincipal.tf3 == null) {
+			telaPrincipal.tf3 = new TelaFoto3(telaPrincipal, painelImagens);
+		}
+		telaPrincipal.tf3.setVisible(true);
 	}
 	
 	@Override 

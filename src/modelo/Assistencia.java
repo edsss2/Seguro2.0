@@ -6,33 +6,42 @@ public class Assistencia {
 	private String cnpj;
 	private long telefone;
 	private String nomeTecnicoCompleto;
+	private String email;
 	private int idAssistencia;
 	static int geradorIdAssistencia;
 	
 	//Construtores
-	public Assistencia(int idAssistencia, String nomeAssistencia, String cnpj, long telefone, String nomeTecnicoCompleto) {
+	public Assistencia(int idAssistencia, String nomeAssistencia, String cnpj, long telefone, String nomeTecnicoCompleto, String email) {
 		super();
 		this.nomeAssistencia = nomeAssistencia;
 		this.cnpj = cnpj;
 		this.telefone = telefone;
 		this.nomeTecnicoCompleto = nomeTecnicoCompleto;
+		this.email = email;
 	}
 	
 	public Assistencia() {
 		super();
 	}
 
-	public Assistencia(String nomeAssistencia, String cnpj, long telefone, String nomeTecnicoCompleto) {
+	public Assistencia(String nomeAssistencia, String cnpj, long telefone, String nomeTecnicoCompleto, String email) {
 		super();
 		geradorIdAssistencia++;
 		this.nomeAssistencia = nomeAssistencia;
 		this.cnpj = cnpj;
 		this.telefone = telefone;
 		this.nomeTecnicoCompleto = nomeTecnicoCompleto;
+		this.email = email;
 		this.idAssistencia = geradorIdAssistencia;
 	}
 
 	//Getters e Setters
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
 	public String getNomeAssistencia() {
 		return nomeAssistencia;
 	}

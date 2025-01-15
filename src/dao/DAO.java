@@ -209,7 +209,8 @@ public class DAO {
 		ResultSet rs = null;
 		
 		AssistenciaCompleta assistenciaC = null;
-
+		Assistencia assistencia = null;
+		Endereco endereco = null;
 		
 		try {
             conn = Conexao.getConnection();
@@ -218,14 +219,14 @@ public class DAO {
             rs = stmt.executeQuery();
 
             while(rs.next()){
-            	Assistencia assistencia = new Assistencia(
+            	assistencia = new Assistencia(
             			rs.getString("nome_assistencia"),
             			rs.getString("cnpj"),
             			rs.getLong("telefone"),
             			rs.getString("nome_tecnico")
             			);
             	
-            	Endereco endereco = new Endereco(
+            	endereco = new Endereco(
             			rs.getString("rua"),
             			rs.getInt("numero"),
             			rs.getString("bairro"),
@@ -235,6 +236,7 @@ public class DAO {
             			);
             	            	
             }
+            assistenciaC = new AssistenciaCompleta(assistencia, endereco);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -251,6 +253,9 @@ public class DAO {
 		ResultSet rs = null;
 		
 		SeguradoCompleto seguradoC = null;
+		Segurado segurado = null;
+		Endereco endereco = null;
+		
 
 		
 		try {
@@ -260,11 +265,11 @@ public class DAO {
             rs = stmt.executeQuery();
 
             while(rs.next()){
-            	Segurado segurado = new Segurado(
+            	segurado = new Segurado(
             			rs.getString("nome_segurado")
             			);
             	
-            	Endereco endereco = new Endereco(
+            	endereco = new Endereco(
             			rs.getString("rua"),
             			rs.getInt("numero"),
             			rs.getString("bairro"),
@@ -274,6 +279,7 @@ public class DAO {
             			);
             	            	
             }
+            seguradoC = new SeguradoCompleto(segurado, endereco);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -289,8 +295,10 @@ public class DAO {
 		String query = BUSCAR_EQUIPAMENTO;
 		ResultSet rs = null;
 		
-		List <Orcamento> orcamentos = null;
+		ArrayList <Orcamento> orcamentos = null;
 		EquipamentoCompleto equiC = null;
+		Orcamento orcamento = null;
+		Equipamento equipamento = null;
 
 		
 		try {
@@ -301,13 +309,13 @@ public class DAO {
 
             while(rs.next()){
             	
-            	Orcamento orcamento = new Orcamento(
+            	orcamento = new Orcamento(
             			rs.getString("Descricao"),
             			rs.getDouble("valor")
             			);
             	orcamentos.add(orcamento);
             	
-            	Equipamento equipamento = new Equipamento (
+            	equipamento = new Equipamento (
             			rs.getString("nome_equipamento"),
             			rs.getString("marca"),
             			rs.getString("modelo"),
@@ -318,6 +326,7 @@ public class DAO {
             			rs.getString("motivo_pt")
             			);   	
             }
+            equiC = new EquipamentoCompleto(orcamentos, equipamento);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

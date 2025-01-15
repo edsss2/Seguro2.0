@@ -8,11 +8,11 @@ import modelo.Orcamento;
 
 public class EquipamentoCompleto {
 
-	List <Orcamento> orcamentos = new ArrayList<>();
+	ArrayList <Orcamento> orcamentos = new ArrayList<>();
 	Equipamento equipamento = new Equipamento();
 	
 	//Construtor
-	public EquipamentoCompleto(List <Orcamento> orcamentos, Equipamento equipamento) {
+	public EquipamentoCompleto(ArrayList <Orcamento> orcamentos, Equipamento equipamento) {
 		this.orcamentos = orcamentos;
 		this.equipamento = equipamento;
 	}
@@ -31,7 +31,7 @@ public class EquipamentoCompleto {
 		return orcamentos;
 	}
 
-	public void setOrcamentos(List<Orcamento> orcamentos) {
+	public void setOrcamentos(ArrayList<Orcamento> orcamentos) {
 		this.orcamentos = orcamentos;
 	}
 

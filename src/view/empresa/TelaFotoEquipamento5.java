@@ -5,14 +5,15 @@ import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
 
 import dao.DaoImagesE;
+import view.PainelImagens;
 import view.TelaPrincipal;
 
 public class TelaFotoEquipamento5 extends TelaFoto {
 
 	private static final long serialVersionUID = 1L;
 
-	public TelaFotoEquipamento5(TelaPrincipal telaPrincipal) {
-		super(telaPrincipal, "ADICIONE AS FOTOS DO EQUIPAMENTO", "5- Local de Instalação");
+	public TelaFotoEquipamento5(TelaPrincipal telaPrincipal, PainelImagens painelImagens) {
+		super(telaPrincipal, "ADICIONE AS FOTOS DO EQUIPAMENTO", "5- Local de Instalação", painelImagens);
 	}
 
 	
@@ -35,7 +36,6 @@ public class TelaFotoEquipamento5 extends TelaFoto {
 			JOptionPane.showMessageDialog(TelaFotoEquipamento5.this, mensagem1, "Notificação", JOptionPane.INFORMATION_MESSAGE);
 		}else {
 			JOptionPane.showMessageDialog(TelaFotoEquipamento5.this, mensagemErro, "Erro", JOptionPane.ERROR_MESSAGE);
-			telaPrincipal.tfe1 = new TelaFotoEquipamento1(telaPrincipal);
 			telaPrincipal.tfe1.setVisible(true);
 		}
 		

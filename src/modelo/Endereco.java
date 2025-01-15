@@ -12,6 +12,12 @@ public class Endereco {
 	static int geradorIdEndereco = 0;
 
 	
+	@Override
+	public String toString() {
+		return rua + ", " + numero + ", " + bairro + ", " + cidade + " - "
+				+ estado + ", CEP: " + cep;
+	}
+
 	//Construtores
 	public Endereco(String rua, int numero, String bairro, String cidade, String estado, long cep) {
 		super();

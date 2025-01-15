@@ -48,7 +48,7 @@ public class AbaEmpresa extends JPanel {
 
 	
 	//metodo usado no botao salvar
-	public void salvarDados() {
+	public void salvarDados(ActionEvent e) {
 		
 		try {
 			DAO dao = new DAO();
@@ -414,9 +414,10 @@ public class AbaEmpresa extends JPanel {
 		JButton btnAdicionarFotos = new JButton("Adicionar fotos");
 		btnAdicionarFotos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				telaPrincipal.tf1 = new TelaFoto1(telaPrincipal);
-				telaPrincipal.tf1.setVisible(true);
-				
+				if(telaPrincipal.tf1 == null) {
+					telaPrincipal.tf1 = new TelaFoto1(telaPrincipal, painelImagens);
+				}
+				telaPrincipal.tf1.setVisible(true);				
 			}
 		});
 		btnAdicionarFotos.setBackground(Color.LIGHT_GRAY);
@@ -424,38 +425,8 @@ public class AbaEmpresa extends JPanel {
 		btnAdicionarFotos.setBounds(22, 530, 130, 35);
 		add(btnAdicionarFotos);
 		
-		/* Para salvar a assistencia ou o segurado é preciso que se salve o endereço de cada um, para que
-		 * no banco de dados já exista a chave estrangeira. 
-		 */
 		btnSalvar = new JButton("Salvar");
-		btnSalvar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				salvarDados();
-			
-				//Cria a instancia do DAO para salvar no banco de dados
-				DAO dao = new DAO();
-					
-					//Cria instancias das classes modelos a serem salvas
-				criarInstancias();
-					
-				dao.salvarEndereco(enderecoAssistencia);
-				/*Após salvar o endereco é gerado o id daquele endreço que vai para o banco de dados,
-				* uso o metodo "resgatarId" para armazenar esse id em uma variavel, para passar essa variavel
-				* para o metodo de salvar assistencia.
-				*/
-				int idEnderecoAssistencia = resgatarId(enderecoAssistencia);
-				dao.salvarEndereco(enderecoSegurado);
-				int idEnderecoSegurado = resgatarId(enderecoSegurado);
-				dao.salvarAssistencia(assistencia, idEnderecoAssistencia);
-				dao.salvarSegurado(segurado, idEnderecoSegurado);
-				
-				//Apaga os textos dos campos
-				apagarCampos();
-				
-				JOptionPane.showMessageDialog(null, "Salvo com sucesso!", "Mensagem", JOptionPane.INFORMATION_MESSAGE);
-				
-			}
-		});
+		btnSalvar.addActionListener(this :: salvarDados);
 		
 		btnSalvar.setBackground(Color.LIGHT_GRAY);
 		btnSalvar.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 14));
