@@ -68,5 +68,11 @@ public class ModeloTabela extends AbstractTableModel{
 		fireTableRowsDeleted(linhaSelecionada, linhaSelecionada);
 		
 	}
+	
+	public void removeRow() {
+		fireTableRowsDeleted(1, orcamentos.size());
+		orcamentos.removeAll(orcamentos);
+
+	}
 
 }

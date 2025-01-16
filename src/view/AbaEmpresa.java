@@ -29,10 +29,10 @@ public class AbaEmpresa extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
-	private JTextField txtCnpj, txtNome, txtTelefone, txtRua, txtBairro, txtNumero, txtCidade, txtEstado, txtCep, txtTecnico,
+	private JTextField txtCnpj, txtNome, txtTelefone, txtRua, txtBairro, txtNumero, txtCidade, txtEstado, txtCep, txtTecnico, txtEmail,
 	txtSeguradoCep, txtSeguradoRua, txtSeguradoBairro, txtSeguradoNumero, txtSeguradoCidade, txtSeguradoEstado, txtSeguradoNome;
 	
-	private int cep, seguradoCep;
+	private int cep, seguradoCep, idAssistencia, idSegurado;
 	private long telefone;
 	
 	Endereco enderecoAssistencia = new Endereco();
@@ -44,15 +44,18 @@ public class AbaEmpresa extends JPanel {
 	
 	private JLabel lblDadosAssistencia, lblEndereco, lblBairro, lblRua, lblNumero, lblCidade, lblEstado, lblCep, lblCnpj, lblNome, 
 	lblTelefone, lblTecnico, lblDadosSegurado, lblSeguradoEndereco, lblSeguradoBairro, lblSeguradoRua, lblSeguradoNumero, lblSeguradoCidade,
-	lblSeguradoEstado, lblSeguradoCep, lblSeguradoNome, lblImagens;
+	lblSeguradoEstado, lblSeguradoCep, lblSeguradoNome, lblImagens, lblEmail;
 
+	private PainelImagens painelImagens;
 	
 	//metodo usado no botao salvar
 	public void salvarDados(ActionEvent e) {
+		criarInstancias();
+		resgatarId(assistencia);
+		resgatarId(segurado);
 		
 		try {
 			DAO dao = new DAO();
-			criarInstancias();
 			
 			dao.salvarEndereco(enderecoAssistencia); //salva o endereço da assistencia
 			int idEnderecoAssistencia = resgatarId(enderecoAssistencia); //armazena o id do endereco em uma variavel
@@ -66,6 +69,7 @@ public class AbaEmpresa extends JPanel {
 			JOptionPane.showMessageDialog(AbaEmpresa.this, "Salvo com sucesso!", "Mensagem", JOptionPane.INFORMATION_MESSAGE);
 			//Apaga os textos dos campos
 			apagarCampos();
+			painelImagens.voltarIconePadrao();
 		} catch (Exception ex) {
 			JOptionPane.showMessageDialog(AbaEmpresa.this, "Erro ao salvar!", "Erro", JOptionPane.ERROR_MESSAGE);
 			ex.printStackTrace();
@@ -90,6 +94,7 @@ public class AbaEmpresa extends JPanel {
 		txtSeguradoCidade.setText("");
 		txtSeguradoEstado.setText("");
 		txtSeguradoNome.setText("");
+		txtEmail.setText("");
 	}
 	
 	private static void limitarEntrada(JTextField textField, int tipo) {
@@ -100,6 +105,16 @@ public class AbaEmpresa extends JPanel {
 	private int resgatarId(Endereco endereco) {
 		int id = endereco.getIdEndereco();
 		return id;
+	}
+	
+	private int resgatarId(Assistencia assistencia) {
+		idAssistencia = assistencia.getIdAssistencia();
+		return idAssistencia;
+	}
+	
+	private int resgatarId(Segurado segurado) {
+		idSegurado = segurado.getIdSegurado();
+		return idSegurado;
 	}
 	
 	private void criarInstancias() {
@@ -134,7 +149,8 @@ public class AbaEmpresa extends JPanel {
 	            txtNome.getText(),
 	            JMascara.GetJmascaraLimpar(txtCnpj.getText()),
 	            telefone,
-	            txtCep.getText()
+	            txtCep.getText(),
+	            txtEmail.getText()
 	        );
 
 	        segurado = new Segurado(txtSeguradoNome.getText());
@@ -165,70 +181,70 @@ public class AbaEmpresa extends JPanel {
 		
 		lblEndereco = new JLabel("Endereço da Assistência");
 		lblEndereco.setFont(new Font("Arial Black", Font.PLAIN, 15));
-		lblEndereco.setBounds(22, 240, 280, 55);
+		lblEndereco.setBounds(22, 250, 280, 55);
 		add(lblEndereco);
 		
 		lblRua = new JLabel("Rua:");
 		lblRua.setFont(new Font("Arial", Font.PLAIN, 14));
-		lblRua.setBounds(22, 290, 35, 30);
+		lblRua.setBounds(22, 300, 35, 30);
 		add(lblRua);
 		
 		lblBairro = new JLabel("Bairro:");
 		lblBairro.setFont(new Font("Arial", Font.PLAIN, 14));
-		lblBairro.setBounds(22, 330, 42, 30);
+		lblBairro.setBounds(22, 340, 42, 30);
 		add(lblBairro);
 		
 		txtRua = new JTextField();
 		txtRua.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		txtRua.setBounds(77, 290, 345, 26);
+		txtRua.setBounds(77, 300, 345, 26);
 		add(txtRua);
 		txtRua.setColumns(10);
 		
 		txtBairro = new JTextField();
 		txtBairro.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		txtBairro.setBounds(77, 330, 228, 26);
+		txtBairro.setBounds(77, 340, 228, 26);
 		add(txtBairro);
 		txtBairro.setColumns(10);
 		
 		lblNumero = new JLabel("N° :");
 		lblNumero.setFont(new Font("Arial", Font.PLAIN, 14));
-		lblNumero.setBounds(315, 330, 23, 30);
+		lblNumero.setBounds(315, 340, 23, 30);
 		add(lblNumero);
 		
 		txtNumero = new JTextField();
 		txtNumero.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		txtNumero.setBounds(348, 330, 74, 30);
+		txtNumero.setBounds(348, 340, 74, 30);
 		limitarEntrada(txtNumero, InputFilter.SOMENTE_NUMEROS);
 		add(txtNumero);
 		txtNumero.setColumns(10);
 		
 		lblCidade = new JLabel("Cidade:");
 		lblCidade.setFont(new Font("Arial", Font.PLAIN, 14));
-		lblCidade.setBounds(22, 370, 49, 30);
+		lblCidade.setBounds(22, 380, 49, 30);
 		add(lblCidade);
 		
 		txtCidade = new JTextField();
 		txtCidade.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		txtCidade.setBounds(77, 370, 228, 26);
+		txtCidade.setBounds(77, 380, 228, 26);
 		limitarEntrada(txtCidade, InputFilter.SOMENTE_LETRAS);
 		add(txtCidade);
 		txtCidade.setColumns(10);
 		
 		lblEstado = new JLabel("Estado:");
 		lblEstado.setFont(new Font("Arial", Font.PLAIN, 14));
-		lblEstado.setBounds(22, 410, 50, 30);
+		lblEstado.setBounds(22, 420, 50, 30);
 		add(lblEstado);
 		
 		txtEstado = new JTextField();
 		txtEstado.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		txtEstado.setBounds(77, 410, 228, 26);
+		txtEstado.setBounds(77, 420, 228, 26);
 		limitarEntrada(txtEstado, InputFilter.SOMENTE_LETRAS);
 		add(txtEstado);
 		txtEstado.setColumns(10);
 		
 		lblCep = new JLabel("Cep:");
 		lblCep.setFont(new Font("Arial", Font.PLAIN, 14));
-		lblCep.setBounds(22, 450, 45, 30);
+		lblCep.setBounds(22, 460, 45, 30);
 		add(lblCep);
 		
 		lblNome = new JLabel("Nome:");
@@ -284,7 +300,16 @@ public class AbaEmpresa extends JPanel {
 		add(txtTelefone);
 		txtTelefone.setColumns(10);
 		
+		lblEmail = new JLabel("E-mail: ");
+		lblEmail.setFont(new Font("Arial", Font.PLAIN, 14));
+		lblEmail.setBounds(22, 220, 154, 30);
+		add(lblEmail);
 		
+		txtEmail = new JTextField();
+		txtEmail.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		txtEmail.setBounds(77, 220, 252, 26);
+		add(txtEmail);
+		txtEmail.setColumns(10);
 		
 		//Segurado
 		
@@ -371,7 +396,7 @@ public class AbaEmpresa extends JPanel {
 			}
 		});
 		txtCep.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		txtCep.setBounds(77, 450, 228, 26);
+		txtCep.setBounds(77, 460, 228, 26);
 		add(txtCep);
 		txtCep.setColumns(10);
 		
@@ -405,7 +430,7 @@ public class AbaEmpresa extends JPanel {
 		lblImagens.setBounds(622, 415, 100, 35);
 		add(lblImagens);
 		
-		PainelImagens painelImagens = new PainelImagens(telaPrincipal.tf1, telaPrincipal.tf2, telaPrincipal.tf3, 
+		painelImagens = new PainelImagens(telaPrincipal.tf1, telaPrincipal.tf2, telaPrincipal.tf3, 
 														telaPrincipal.tf4, telaPrincipal.tf5);
 		painelImagens.setBounds(622, 450, 420, 90);
 		add(painelImagens);
@@ -435,14 +460,20 @@ public class AbaEmpresa extends JPanel {
 		btnProsseguir = new JButton("Prosseguir");
 		btnProsseguir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				
 				tabbedPane.setSelectedIndex(1);
 			}
 		});
 		btnProsseguir.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 14));
 		btnProsseguir.setBackground(Color.LIGHT_GRAY);
 		btnProsseguir.setBounds(290, 530, 100, 35);
+	}
+	
+	public int getIdAssistencia() {
+		return idAssistencia;
+	}
+	
+	public int getIdSegurado() {
+		return idSegurado;
 	}
 	
 

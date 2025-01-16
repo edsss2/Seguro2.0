@@ -19,8 +19,13 @@ import javax.swing.UIManager;
 
 import dao.DAO;
 import modelo.Equipamento;
+import modelo.Laudo;
 import modelo.ModeloTabela;
 import modelo.Orcamento;
+import modelo.composto.SeguradoCompleto;
+import modelo.composto.AssistenciaCompleta;
+import modelo.composto.EquipamentoCompleto;
+import modelo.composto.SeguradoCompleto;
 import view.empresa.TelaFotoEquipamento1;
 
 public class AbaEquipamento extends JPanel {
@@ -44,6 +49,24 @@ public class AbaEquipamento extends JPanel {
 	
 	public JButton btnSalvarEquipamento, btnProsseguirEquipamento;
 	private JButton btnAddFotoEquipamento, btnAdicionarLinha, btnRemoverLinha;
+	private int idAssistencia, idSegurado;
+	
+	private AssistenciaCompleta assCom;
+	private SeguradoCompleto segCom;
+	private EquipamentoCompleto equiCom;
+	
+	private PainelImagens painelImagens;
+	
+	private void apagarDados() {
+		txtNomeEquipamento.setText("");
+		txtMarca.setText(""); 
+		txtModelo.setText("");
+		txtNumeroSerie.setText("");
+		jepPecasDanificadas.setText(""); 
+		jepMotivoDano.setText("");
+		jepPt.setText("");
+		modeloTabela.removeRow();
+	}
 	
 	private void removerLinha(ActionEvent e) {
 		int linhaSelecionada = table.getSelectedRow();
@@ -68,8 +91,7 @@ public class AbaEquipamento extends JPanel {
 	}
 	
 	private void salvarTabelaOrcamento(DAO dao, int idEquipamento) {
-		for(int i = 0; i < orcamentos.size(); i++) {
-			Orcamento orcamento = orcamentos.get(i);
+		for(Orcamento orcamento : orcamentos) {
 			dao.salvarOrcamento(orcamento, idEquipamento);
 		}
 	}
@@ -97,6 +119,9 @@ public class AbaEquipamento extends JPanel {
 			dao.salvarEquipamento(equipamento);
 			int idEquipamento = resgatarId(equipamento);
 			salvarTabelaOrcamento(dao, idEquipamento);
+			
+			apagarDados();
+			painelImagens.voltarIconePadrao();
 
 			JOptionPane.showMessageDialog(this, "Salvo com sucesso!", "Mensagem", JOptionPane.INFORMATION_MESSAGE);
 		} catch (Exception ex) {
@@ -106,8 +131,27 @@ public class AbaEquipamento extends JPanel {
 		
 	}
 	
-	public AbaEquipamento (TelaPrincipal telaPrincipal) {
-		//tabbedPane.addTab("Equipamento", null, abaEquipamento, null);
+	private void resgatarId(AbaEmpresa abaEmpresa) {
+		idAssistencia = abaEmpresa.getIdAssistencia();
+		idSegurado = abaEmpresa.getIdSegurado();
+	}
+	
+	private void buscarBD() {
+		DAO dao = new DAO();
+		
+		assCom = dao.buscarAssistencia(idAssistencia);
+		segCom = dao.buscarSegurado(idSegurado);
+		int id = resgatarId(equipamento);
+		equiCom = dao.buscarEquipamento(id);
+	}
+	
+	private void gerarLaudo(ActionEvent e, AbaEmpresa abaEmpresa) {
+		resgatarId(abaEmpresa);
+		buscarBD();
+		Laudo.gerarLaudo(assCom, segCom, equiCom);
+	}
+	
+	public AbaEquipamento (TelaPrincipal telaPrincipal, AbaEmpresa abaEmpresa) {
 		setLayout(null);
 		
 		lblDadosEquipamento = new JLabel("DADOS DO EQUIPAMENTO");
@@ -259,15 +303,12 @@ public class AbaEquipamento extends JPanel {
 		btnSalvarEquipamento.setBounds(870, 500, 100, 35);
 		
 		btnProsseguirEquipamento = new JButton("Prosseguir");
-		btnProsseguirEquipamento.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		btnProsseguirEquipamento.addActionListener(e -> gerarLaudo(e, abaEmpresa));
 		btnProsseguirEquipamento.setFont(new Font("Microsoft New Tai Lue", Font.PLAIN, 14));
 		btnProsseguirEquipamento.setBackground(Color.LIGHT_GRAY);
 		btnProsseguirEquipamento.setBounds(990, 500, 100, 35);
 		
-		PainelImagens painelImagens = new PainelImagens(telaPrincipal.tfe1, telaPrincipal.tfe2, telaPrincipal.tfe3, 
+		painelImagens = new PainelImagens(telaPrincipal.tfe1, telaPrincipal.tfe2, telaPrincipal.tfe3, 
 				telaPrincipal.tfe4, telaPrincipal.tfe5);
 		painelImagens.setBounds(622, 370, 420, 90);
 		add(painelImagens);

@@ -91,8 +91,7 @@ public class TelaPrincipal extends JFrame {
 		//primeiro nulo é o icone, e o segundo tooltip text
 		tabbedPane.addTab("Assistência e Segurado", null, abaEmpresa, null);
 
-		
-		abaEquipamento = new AbaEquipamento(TelaPrincipal.this);
+		abaEquipamento = new AbaEquipamento(TelaPrincipal.this, abaEmpresa);
 		tabbedPane.addTab("Equipamento", null, abaEquipamento, null);
 	
 	}

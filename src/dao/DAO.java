@@ -34,7 +34,7 @@ public class DAO {
 			+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
 	
 	private final static String SALVAR_ASSISTENCIA = "INSERT INTO assistencia_tecnica (id_assistencia, cnpj, telefone, "
-			+ "nome_assistencia, nome_tecnico, id_endereco) VALUES (?, ?, ?, ?, ?, ?)";
+			+ "nome_assistencia, nome_tecnico, email, id_endereco) VALUES (?, ?, ?, ?, ?, ?, ?)";
 	
 	private final static String SALVAR_SEGURADO = "INSERT INTO segurado (id_segurado, nome_segurado, id_endereco) "
 			+ "VALUES (?, ?, ?)";
@@ -47,16 +47,16 @@ public class DAO {
 	
 	//Querys para buscar no banco de dados
 	
-	private final static String BUSCAR_ASSISTENCIA = "SELECT e.estado, e.rua. e.numero, e.bairro, e.cidade, e.cep "
-			+ "a.nome, a.cnpj, a.telefone, a.nome_tecnico FROM endereco AS e INNER JOIN aissistencia_tecnica AS a"
-			+ "ON a.id_endereco = e.id_endereco WHERE cnpj = ?";
+	private final static String BUSCAR_ASSISTENCIA = "SELECT e.estado, e.rua, e.numero, e.bairro, e.cidade, e.cep, "
+			+ "a.nome_assistencia, a.cnpj, a.telefone, a.nome_tecnico, a.email FROM endereco AS e INNER JOIN assistencia_tecnica AS a "
+			+ "ON a.id_endereco = e.id_endereco WHERE id_assistencia = ?";
 	
-	private final static String BUSCAR_SEGURADO = "SELECT e.estado, e.rua, e.rua. e.numero, e.bairro, e.rua, e.cidade, s.nome"
+	private final static String BUSCAR_SEGURADO = "SELECT e.estado, e.rua, e.numero, e.bairro, e.rua, e.cidade, e.cep, s.nome_segurado"
 			+ " FROM endereco AS e INNER JOIN segurado AS s ON s.id_endereco = e.id_endereco WHERE id_segurado = ?";
 	
-	private final static String BUSCAR_EQUIPAMENTO = "SELECT eq.nome, eq.marca, eq.modelo, eq.numero_serie, eq.pecas_danificadas, "
-			+ "eq.motivo_dano, eq.possibilidade_reparo, eq.motivo_pt, o.descricao, o.valor FROM equpamento AS eq "
-			+ "INNER JOIN orcamento AS o ON eq.id_equipamento = o.id_equipamento WHERE id_equipamento = ?";
+	private final static String BUSCAR_EQUIPAMENTO = "SELECT eq.nome_equipamento, eq.marca, eq.modelo, eq.numero_serie, eq.pecas_danificadas, "
+			+ "eq.motivo_dano, eq.possibilidade_reparo, eq.motivo_pt, o.descricao, o.valor FROM equipamento AS eq "
+			+ "INNER JOIN orcamento AS o ON eq.id_equipamento = o.id_equipamento WHERE eq.id_equipamento = ?";
 
 	//Construtor
 	public DAO() {
@@ -110,6 +110,7 @@ public class DAO {
 			stmt.setLong(i++, assistencia.getTelefone());
 			stmt.setString(i++, assistencia.getNomeAssistencia());
 			stmt.setString(i++, assistencia.getNomeTecnicoCompleto());
+			stmt.setString(i++, assistencia.getEmail());
 			stmt.setInt(i++, idEndereco);
 			
 			stmt.executeUpdate();
@@ -203,7 +204,7 @@ public class DAO {
 	}
 	
 	//Metodos para buscar
-	public AssistenciaCompleta buscarAssistencia(String cnpj) {
+	public AssistenciaCompleta buscarAssistencia(int id) {
 		Connection conn = null;
 		String query = BUSCAR_ASSISTENCIA;
 		ResultSet rs = null;
@@ -215,7 +216,7 @@ public class DAO {
 		try {
             conn = Conexao.getConnection();
             stmt = conn.prepareStatement(query);
-            stmt.setString(1, cnpj);
+            stmt.setInt(1, id);
             rs = stmt.executeQuery();
 
             while(rs.next()){
@@ -223,7 +224,8 @@ public class DAO {
             			rs.getString("nome_assistencia"),
             			rs.getString("cnpj"),
             			rs.getLong("telefone"),
-            			rs.getString("nome_tecnico")
+            			rs.getString("nome_tecnico"),
+            			rs.getString("email")
             			);
             	
             	endereco = new Endereco(
@@ -247,7 +249,7 @@ public class DAO {
         return assistenciaC;
 	}
 	
-	public SeguradoCompleto buscarSegurado(String nomeSegurado) {
+	public SeguradoCompleto buscarSegurado(int id) {
 		Connection conn = null;
 		String query = BUSCAR_SEGURADO;
 		ResultSet rs = null;
@@ -261,7 +263,7 @@ public class DAO {
 		try {
             conn = Conexao.getConnection();
             stmt = conn.prepareStatement(query);
-            stmt.setString(1, nomeSegurado);
+            stmt.setInt(1, id);
             rs = stmt.executeQuery();
 
             while(rs.next()){
@@ -290,12 +292,12 @@ public class DAO {
         return seguradoC;
 	}
 	
-	public EquipamentoCompleto buscarEquipamento(String nomeEquipamento) {
+	public EquipamentoCompleto buscarEquipamento(int id) {
 		Connection conn = null;
 		String query = BUSCAR_EQUIPAMENTO;
 		ResultSet rs = null;
 		
-		ArrayList <Orcamento> orcamentos = null;
+		ArrayList <Orcamento> orcamentos = new ArrayList<>();
 		EquipamentoCompleto equiC = null;
 		Orcamento orcamento = null;
 		Equipamento equipamento = null;
@@ -304,7 +306,7 @@ public class DAO {
 		try {
             conn = Conexao.getConnection();
             stmt = conn.prepareStatement(query);
-            stmt.setString(1, nomeEquipamento);
+            stmt.setInt(1, id);
             rs = stmt.executeQuery();
 
             while(rs.next()){

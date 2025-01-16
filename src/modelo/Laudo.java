@@ -31,6 +31,17 @@ public class Laudo  {
         paragraph.setAlignment(alignment);
         document.add(paragraph);
     }
+	
+	private static void addParagraph(Document document, String text1, String text2, Font font1, Font font2, int alignment) 
+			throws DocumentException{
+		Paragraph paragraph = new Paragraph();
+		paragraph.setAlignment(alignment);
+		Chunk chunk1 = new Chunk(text1, font1);
+		Chunk chunk2 = new Chunk(text2, font2);
+		paragraph.add(chunk1);
+		paragraph.add(chunk2);
+		document.add(paragraph);
+	}
 
     // Método para adicionar uma célula à tabela
     private static void addTableCell(PdfPTable table, String text, Font font) {
@@ -65,65 +76,81 @@ public class Laudo  {
             // Fontes
             Font tituloFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD , 20, BaseColor.BLACK);
             Font subTituloFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD , 14, BaseColor.BLACK);
-            Font sectionFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12, BaseColor.BLACK);
+            
+            Font negritoFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12, BaseColor.BLACK);
+            Font redNegritoFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 13, BaseColor.RED);
+            
             Font textFont = FontFactory.getFont(FontFactory.TIMES, 12, BaseColor.BLACK);
+            Font redTextFont = FontFactory.getFont(FontFactory.TIMES, 12, BaseColor.RED);
+            
             Font textSimplesFont = FontFactory.getFont(FontFactory.HELVETICA, 10, BaseColor.BLACK);
 
             // Título
             addParagraph(document, "LAUDO TÉCNICO / ORÇAMENTO", tituloFont, Element.ALIGN_CENTER);
             addParagraph(document, assistencia.getNomeAssistencia(), tituloFont, Element.ALIGN_CENTER);
-            document.add(Chunk.NEWLINE);
 
             // Dados da empresa
             addParagraph(document, enderecoAss.toString(), textFont, Element.ALIGN_CENTER);
             addParagraph(document, "CNPJ: " + cnpj, textFont, Element.ALIGN_CENTER);
             addParagraph(document, "TELEFONE: " + telefoneComMascara, textFont, Element.ALIGN_CENTER);
             addParagraph(document, "E-mail: " + assistencia.getEmail(), textFont, Element.ALIGN_CENTER);
-
             document.add(Chunk.NEWLINE);
 
             // Técnico responsável
-            addParagraph(document, "TÉCNICO RESPONSÁVEL: " + assistencia.getNomeTecnicoCompleto(), sectionFont, Element.ALIGN_CENTER);
-
+            addParagraph(document, "TÉCNICO RESPONSÁVEL: ", assistencia.getNomeTecnicoCompleto(), negritoFont, redNegritoFont, Element.ALIGN_CENTER);
             document.add(Chunk.NEWLINE);
 
             // Dados do cliente e equipamentos
-            addParagraph(document, "Conforme solicitação do " + segurado.getNome() + enderecoSeg.toString(), textSimplesFont, Element.ALIGN_LEFT);
-            
+            addParagraph(document, "Conforme solicitação do " + segurado.getNome() + ", residente na" + 
+            enderecoSeg.toString(), textSimplesFont, Element.ALIGN_LEFT);    
             document.add(Chunk.NEWLINE);
-            addParagraph(document, "Segue avaliação técnica dos seguintes equipamentos danificados:", textSimplesFont, Element.ALIGN_LEFT);
-
+            
+            addParagraph(document, "Segue avaliação técnica dos seguinte equipamento danificado:", textSimplesFont, Element.ALIGN_LEFT);
             document.add(Chunk.NEWLINE);
             
             addParagraph(document, "DADOS DO EQUIPAMENTO", subTituloFont, Element.ALIGN_CENTER);
-
             document.add(Chunk.NEWLINE);
             
-            addParagraph(document, "Equipamento: " + equipamento.getNomeEquipamento(), textFont, Element.ALIGN_LEFT);
-            addParagraph(document, "Marca: " + equipamento.getMarca(), textFont, Element.ALIGN_LEFT);
-            addParagraph(document, "Modelo: " + equipamento.getModelo(), textFont, Element.ALIGN_LEFT);
-            addParagraph(document, "Numero de Série: " + equipamento.getNumeroSerie(), textFont, Element.ALIGN_LEFT);
+            addParagraph(document, "Equipamento: ", equipamento.getNomeEquipamento(), textFont, redTextFont, Element.ALIGN_LEFT);
+            addParagraph(document, "Marca: ", equipamento.getMarca(), textFont, redTextFont, Element.ALIGN_LEFT);
+            addParagraph(document, "Modelo: ", equipamento.getModelo(), textFont, redTextFont, Element.ALIGN_LEFT);
+            addParagraph(document, "Numero de Série: ", equipamento.getNumeroSerie(), textFont, redTextFont, Element.ALIGN_LEFT);
+            document.add(Chunk.NEWLINE);
+            
             addParagraph(document, "Componentes(peças) danificados nos equipamentos: ", textFont, Element.ALIGN_LEFT);
-            addParagraph(document, equipamento.getPecasDanificadas(), textFont, Element.ALIGN_LEFT);
+            addParagraph(document, equipamento.getPecasDanificadas(), redTextFont, Element.ALIGN_LEFT);
             addParagraph(document, "Causa conclusiva do dano na peça/ componentes (motivo do dano): ", textFont, Element.ALIGN_LEFT);
-            addParagraph(document, equipamento.getMotivoDano(), textFont, Element.ALIGN_LEFT);
+            addParagraph(document, equipamento.getMotivoDano(), redTextFont, Element.ALIGN_LEFT);
             addParagraph(document, "Há possibilidade de reparo dos equipamentos? ", textFont, Element.ALIGN_LEFT);
-            addParagraph(document, equipamento.getPossibilidadeReparo(), textFont, Element.ALIGN_LEFT);
+            addParagraph(document, equipamento.getPossibilidadeReparo(), redTextFont, Element.ALIGN_LEFT);
             addParagraph(document, "Se for perda total do equipamento, qual o motivo da perda total do equipamento? ",
             		textFont, Element.ALIGN_LEFT);
-            addParagraph(document, equipamento.getMotivoPt(), textFont, Element.ALIGN_LEFT);
+            addParagraph(document, equipamento.getMotivoPt(), redTextFont, Element.ALIGN_LEFT);
             
 
             // Orçamento
             Double valorTotal = 0.0;
-            addParagraph(document, "ORÇAMENTO DE REPARO DO EQUIPAMENTO", textFont, Element.ALIGN_CENTER);
+            addParagraph(document, "ORÇAMENTO DE REPARO DO EQUIPAMENTO", negritoFont, Element.ALIGN_CENTER);
+            document.add(Chunk.NEWLINE);
+            
+            PdfPTable tabela = new PdfPTable(2);
+            tabela.setWidthPercentage(50);
+            tabela.setWidths(new int[]{2, 1});
+            tabela.setHorizontalAlignment(Element.ALIGN_LEFT);
+            
             for(Orcamento orcamento : orcamentos) {
-            	addParagraph(document, orcamento.getDescricao() + "			" 
-            			+ orcamento.getValor(), textFont, Element.ALIGN_LEFT);
             	valorTotal += orcamento.getValor();
+            	String valor = String.valueOf(orcamento.getValor());
+            	addTableCell(tabela, orcamento.getDescricao(), textFont);
+            	addTableCell(tabela, valor, textFont);
+            	
             }
-            addParagraph(document, "VALOR TOTAL			" + valorTotal, sectionFont, Element.ALIGN_LEFT);
-
+            //addParagraph(document, "VALOR TOTAL	" + valorTotal, negritoFont, Element.ALIGN_LEFT);
+            addTableCell(tabela, "VALOR TOTAL", negritoFont);
+            String valor = String.valueOf(valorTotal);
+            addTableCell(tabela, valor, negritoFont);
+            document.add(tabela);           
+            document.add(Chunk.NEWLINE);
             document.add(Chunk.NEWLINE);
 
             // Assinatura e carimbo
@@ -131,6 +158,7 @@ public class Laudo  {
             table.setWidthPercentage(100); // Define que a tabela usa 100% da largura disponível
 
             // Adiciona os elementos na tabela
+            //addTableCell(table, "Assinatura do técnico responsável", textFont);
             Paragraph paragrafoEsquerdo = new Paragraph("Assinatura do técnico responsável");
             PdfPCell elementoEsquerdo = new PdfPCell(paragrafoEsquerdo);
             elementoEsquerdo.setBorder(PdfPCell.NO_BORDER); // Remove as bordas da célula
